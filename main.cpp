@@ -3,6 +3,8 @@
 #include <GLFW/glfw3.h>
 #include "model_load/stb_image.h"
 #include "model_load/Shader.h"
+#include "model_load/BridgeModel.h"
+#include <filesystem>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -30,7 +32,11 @@ int main() {
     stbi_set_flip_vertically_on_load(true);
     glEnable(GL_DEPTH_TEST);
 
+    Shader ourShader("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
+    std::string path = std::filesystem::path("../resources/models/bridge.obj");
 
+
+    BridgeModel ourModel(path.c_str());
 
     glViewport(0, 0, 800, 600);
 
@@ -39,8 +45,12 @@ int main() {
     while(!glfwWindowShouldClose(window)){
         processInput(window);
 
-        glClearColor(0.921f, 0.419f, 0.776f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        //glClearColor(0.921f, 0.419f, 0.776f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        ourShader.use();
+
+        ourModel.Draw(ourShader);
         glfwPollEvents();
         glfwSwapBuffers(window);
     }

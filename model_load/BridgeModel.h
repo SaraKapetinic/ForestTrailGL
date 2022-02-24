@@ -15,7 +15,7 @@
 
 class BridgeModel {
 public:
-    BridgeModel(char* path){
+    BridgeModel(std::string path){
         loadModel(path);
     }
     void Draw(Shader &shader);
