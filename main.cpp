@@ -1,9 +1,9 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "model_load/stb_image.h"
-#include "model_load/Shader.h"
-#include "model_load/BridgeModel.h"
+#include "model/stb_image.h"
+#include "model/Shader.h"
+#include "model/Model.h"
 #include <filesystem>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -37,7 +37,7 @@ int main() {
     std::string path = std::filesystem::path("../resources/models/bridge.obj");
 
 
-    BridgeModel ourModel(path.c_str());
+    Model ourModel(path.c_str());
 
     glViewport(0, 0, 800, 600);
 

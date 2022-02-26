@@ -2,8 +2,8 @@
 // Created by predrag on 18.2.22..
 //
 
-#ifndef CGRAPHICS_BRIDGE_MESH_H
-#define CGRAPHICS_BRIDGE_MESH_H
+#ifndef CGRAPHICS_MESH_H
+#define CGRAPHICS_MESH_H
 
 #include <glm/glm.hpp>
 #include "Shader.h"
@@ -21,13 +21,13 @@ struct Texture {
     std::string path;
 };
 
-class bridge_mesh {
+class Mesh {
     public:
         std::vector<Vertex> vertices;
         std::vector<unsigned> indices;
         std::vector<Texture> textures;
 
-        bridge_mesh(std::vector<Vertex> vertices, std::vector<unsigned> indices, std::vector<Texture> textures);
+        Mesh(std::vector<Vertex> vertices, std::vector<unsigned> indices, std::vector<Texture> textures);
         void Draw(Shader &shader);
 
 private:
@@ -36,4 +36,4 @@ private:
 };
 
 
-#endif //CGRAPHICS_BRIDGE_MESH_H
+#endif //CGRAPHICS_MESH_H

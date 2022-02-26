@@ -2,10 +2,10 @@
 // Created by predrag on 18.2.22..
 //
 
-#include "bridge_mesh.h"
+#include "Mesh.h"
 
-bridge_mesh::bridge_mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices,
-                         std::vector<Texture> textures) {
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices,
+           std::vector<Texture> textures) {
     this->vertices = vertices;
     this->indices = indices;
     this->textures = textures;
@@ -13,7 +13,7 @@ bridge_mesh::bridge_mesh(std::vector<Vertex> vertices, std::vector<unsigned int>
     setupMesh();
 }
 
-void bridge_mesh::setupMesh() {
+void Mesh::setupMesh() {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -40,7 +40,7 @@ void bridge_mesh::setupMesh() {
     glBindVertexArray(0);
 }
 
-void bridge_mesh::Draw(Shader &shader) {
+void Mesh::Draw(Shader &shader) {
     unsigned int diffuseNr = 1;
     unsigned int specularNr = 1;
     for(unsigned int i = 0; i < textures.size(); i++)

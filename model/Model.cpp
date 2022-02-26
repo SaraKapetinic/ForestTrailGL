@@ -2,15 +2,15 @@
 // Created by predrag on 18.2.22..
 //
 
-#include "BridgeModel.h"
+#include "Model.h"
 #include <iostream>
 
-void BridgeModel::Draw(Shader &shader) {
+void Model::Draw(Shader &shader) {
     for(unsigned i=0;i<meshes.size();i++)
         meshes[i].Draw(shader);
 }
 
-void BridgeModel::loadModel(std::string path) {
+void Model::loadModel(std::string path) {
     Assimp::Importer import;
 
     const aiScene *scene = import.ReadFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -27,7 +27,7 @@ void BridgeModel::loadModel(std::string path) {
 
 }
 
-bridge_mesh BridgeModel::processMesh(aiMesh *mesh, const aiScene *scene) {
+Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<Texture> textures;
@@ -67,7 +67,6 @@ bridge_mesh BridgeModel::processMesh(aiMesh *mesh, const aiScene *scene) {
             indices.push_back(face.mIndices[j]);
     }
 
-
     if(mesh->mMaterialIndex >= 0)
     {
         aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
@@ -79,10 +78,10 @@ bridge_mesh BridgeModel::processMesh(aiMesh *mesh, const aiScene *scene) {
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
     }
 
-    return bridge_mesh(vertices, indices, textures);
+    return Mesh(vertices, indices, textures);
 }
 
-void BridgeModel::processNode(aiNode *node, const aiScene *scene) {
+void Model::processNode(aiNode *node, const aiScene *scene) {
     for(unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
@@ -95,9 +94,7 @@ void BridgeModel::processNode(aiNode *node, const aiScene *scene) {
     }
 }
 
-
-
-std::vector<Texture> BridgeModel::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName) {
+std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName) {
     std::vector<Texture> textures;
     for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
     {
@@ -126,7 +123,7 @@ std::vector<Texture> BridgeModel::loadMaterialTextures(aiMaterial *mat, aiTextur
     return textures;
 }
 
-unsigned BridgeModel::TextureFromFile(const char *path, const std::string &directory) {
+unsigned Model::TextureFromFile(const char *path, const std::string &directory) {
     std::string filename = std::string(path);
     filename = directory + '/' + filename;
 
