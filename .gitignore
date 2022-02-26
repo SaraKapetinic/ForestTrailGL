@@ -2,4 +2,3 @@
 cmake-*-*
 .vscode
 .DS_Store
-resources/models/

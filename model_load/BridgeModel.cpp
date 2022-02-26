@@ -12,6 +12,7 @@ void BridgeModel::Draw(Shader &shader) {
 
 void BridgeModel::loadModel(std::string path) {
     Assimp::Importer import;
+
     const aiScene *scene = import.ReadFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
 
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode){
@@ -23,6 +24,7 @@ void BridgeModel::loadModel(std::string path) {
     directory = path.substr(0, path.find_last_of('/'));
 
     processNode(scene->mRootNode, scene);
+
 }
 
 bridge_mesh BridgeModel::processMesh(aiMesh *mesh, const aiScene *scene) {

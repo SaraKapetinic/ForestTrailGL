@@ -5,6 +5,7 @@
 #include "model_load/Shader.h"
 #include "model_load/BridgeModel.h"
 #include <filesystem>
+#include <glm/gtc/matrix_transform.hpp>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -43,13 +44,18 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     while(!glfwWindowShouldClose(window)){
+
         processInput(window);
 
-        //glClearColor(0.921f, 0.419f, 0.776f, 1.0f);
+        glClearColor(0.921f, 0.419f, 0.776f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        ourShader.use();
 
+        ourShader.use();
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f,0.0f,0.0f));
+        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+        ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
         glfwPollEvents();
         glfwSwapBuffers(window);
