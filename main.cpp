@@ -112,6 +112,9 @@ void processInput(GLFWwindow* window){
         camera.Position -= glm::normalize(glm::cross(camera.Front, camera.Up)) * speed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.Position += glm::normalize(glm::cross(camera.Front, camera.Up)) * speed;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS){
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
 }
 
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
