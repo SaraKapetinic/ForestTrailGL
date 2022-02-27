@@ -8,7 +8,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "model/Camera.h"
 
-Camera camera(glm::vec3(0.0f,0.0f,3.0f));
+Camera camera(glm::vec3(0.7f,0.3f,5.5f));
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 float lastX = SCR_WIDTH / 2.0f;
@@ -80,8 +80,9 @@ int main() {
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
 
         glm::mat4 model1 = glm::mat4(1.0f);
-        model1 = glm::translate(model, glm::vec3(0.0f,0.0f,0.0f));
+        model1 = glm::translate(model, glm::vec3(-35.0f,-180.0f,-67.0f));
         model1 = glm::scale(model1,glm::vec3(100.0f,100.0f,100.0f));
+        model1 = glm::rotate(model1,glm::radians(90.0f),glm::vec3(1.0,0.0,0.0));
 
         bridgeShader.setMat4("model", model);
         bridgeModel.Draw(bridgeShader);
