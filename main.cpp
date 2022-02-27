@@ -40,10 +40,10 @@ int main() {
 
     Shader ourShader("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
     std::string path = std::filesystem::path("../resources/models/bridge.obj");
-
-
+    std::string streetLamp = std::filesystem::path("../resources/models/Street_Lamp_1.obj");
+    Shader streetLampShader("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
     Model ourModel(path.c_str());
-
+    Model streetLampModel(streetLamp.c_str());
     glViewport(0, 0, 800, 600);
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -55,21 +55,27 @@ int main() {
         glClearColor(0.921f, 0.419f, 0.776f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
+        streetLampShader.use();
         ourShader.use();
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom),(float)SCR_WIDTH/(float)SCR_HEIGHT,0.1f,100.0f);
         glm::mat4 view = camera.GetViewMatrix();
         ourShader.setMat4("projection",projection);
         ourShader.setMat4("view",view);
+        streetLampShader.setMat4("projection",projection);
+        streetLampShader.setMat4("view",view);
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f,0.0f,0.0f));
         model = glm::scale(model, glm::vec3(0.008f, 0.008f, 0.008f));
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0, 0.0, 0.0));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
 
+        glm::mat4 model1 = glm::mat4(1.0f);
+        model1 = glm::translate(model, glm::vec3(0.0f,0.0f,0.0f));
 
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
+        streetLampShader.setMat4("model", model1);
+        streetLampModel.Draw(streetLampShader);
         glfwPollEvents();
         glfwSwapBuffers(window);
     }
