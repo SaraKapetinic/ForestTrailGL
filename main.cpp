@@ -38,12 +38,12 @@ int main() {
     stbi_set_flip_vertically_on_load(true);
     glEnable(GL_DEPTH_TEST);
 
-    Shader ourShader("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
-    std::string path = std::filesystem::path("../resources/models/bridge.obj");
-    std::string streetLamp = std::filesystem::path("../resources/models/Street_Lamp_1.obj");
+    Shader bridgeShader("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
+    std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
+    std::string streetLampPath = std::filesystem::path("../resources/models/Street_Lamp_1.obj");
     Shader streetLampShader("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
-    Model ourModel(path.c_str());
-    Model streetLampModel(streetLamp.c_str());
+    Model bridgeModel(bridgePath.c_str());
+    Model streetLampModel(streetLampPath.c_str());
     glViewport(0, 0, 800, 600);
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -56,13 +56,14 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         streetLampShader.use();
-        ourShader.use();
+        bridgeShader.use();
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom),(float)SCR_WIDTH/(float)SCR_HEIGHT,0.1f,100.0f);
         glm::mat4 view = camera.GetViewMatrix();
-        ourShader.setMat4("projection",projection);
-        ourShader.setMat4("view",view);
+        bridgeShader.setMat4("projection",projection);
+        bridgeShader.setMat4("view",view);
         streetLampShader.setMat4("projection",projection);
         streetLampShader.setMat4("view",view);
+
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f,0.0f,0.0f));
         model = glm::scale(model, glm::vec3(0.008f, 0.008f, 0.008f));
@@ -71,10 +72,11 @@ int main() {
 
         glm::mat4 model1 = glm::mat4(1.0f);
         model1 = glm::translate(model, glm::vec3(0.0f,0.0f,0.0f));
+        model1 = glm::scale(model1,glm::vec3(1.0f,1.0f,1.0f));
 
-        ourShader.setMat4("model", model);
-        ourModel.Draw(ourShader);
-        streetLampShader.setMat4("model", model1);
+        bridgeShader.setMat4("model", model);
+        bridgeModel.Draw(bridgeShader);
+        streetLampShader.setMat4("model1", model1);
         streetLampModel.Draw(streetLampShader);
         glfwPollEvents();
         glfwSwapBuffers(window);
@@ -91,4 +93,14 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height){
 void processInput(GLFWwindow* window){
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    float speed = 0.05f; // adjust accordingly
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        camera.Position += speed * camera.Front;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        camera.Position -= speed * camera.Front;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        camera.Position -= glm::normalize(glm::cross(camera.Front, camera.Up)) * speed;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        camera.Position += glm::normalize(glm::cross(camera.Front, camera.Up)) * speed;
 }
