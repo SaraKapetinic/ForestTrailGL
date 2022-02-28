@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <glm/gtc/matrix_transform.hpp>
 #include "model/Camera.h"
+#include "terrain/Terrain.h"
 
 Camera camera(glm::vec3(0.0f,0.0f,3.0f));
 const unsigned int SCR_WIDTH = 800;
@@ -53,6 +54,11 @@ int main() {
     Shader streetLampShader("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
     Model bridgeModel(bridgePath.c_str());
     Model streetLampModel(streetLampPath.c_str());
+    Terrain terrain(0,0);
+    Mesh terrainMesh = terrain.getTerrainMesh();
+    Shader terrainShader("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
+
+
     glViewport(0, 0, 800, 600);
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -66,12 +72,16 @@ int main() {
 
         streetLampShader.use();
         bridgeShader.use();
+        terrainShader.use();
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom),(float)SCR_WIDTH/(float)SCR_HEIGHT,0.1f,100.0f);
         glm::mat4 view = camera.GetViewMatrix();
         bridgeShader.setMat4("projection",projection);
         bridgeShader.setMat4("view",view);
         streetLampShader.setMat4("projection",projection);
         streetLampShader.setMat4("view",view);
+        terrainShader.setMat4("projection",projection);
+        terrainShader.setMat4("view",view);
+
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f,0.0f,0.0f));
@@ -81,12 +91,21 @@ int main() {
 
         glm::mat4 model1 = glm::mat4(1.0f);
         model1 = glm::translate(model, glm::vec3(0.0f,0.0f,0.0f));
-        model1 = glm::scale(model1,glm::vec3(1.0f,1.0f,1.0f));
+        model1 = glm::scale(model1,glm::vec3(150.0f,150.0f,150.0f));
+
+        glm::mat4 model2 = glm::mat4(1.0f);
+        model2 = glm::translate(model2,glm::vec3(0.0f,0.0f,0.0f));
+        model2 = glm::scale(model2, glm::vec3(1000.0f,1000.0f,1000.0f));
+
+
 
         bridgeShader.setMat4("model", model);
         bridgeModel.Draw(bridgeShader);
-        streetLampShader.setMat4("model1", model1);
+
+        streetLampShader.setMat4("model", model1);
         streetLampModel.Draw(streetLampShader);
+        terrainShader.setMat4("model",model2);
+        terrainMesh.Draw(terrainShader);
         glfwPollEvents();
         glfwSwapBuffers(window);
     }
