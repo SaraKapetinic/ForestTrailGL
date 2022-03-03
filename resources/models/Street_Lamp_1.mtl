@@ -11,7 +11,7 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Bump textures\\2K\\Lamp_Normal.png
-map_Kd ./textures/2K/Lamp_BaseColor.png
+map_Kd ./textures/2K/base_color.jpg
 map_Ns textures\\2K\\Lamp_Roughness.png
 refl textures\\2K\\Lamp_Metallic.png
 
