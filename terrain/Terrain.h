@@ -5,8 +5,9 @@
 #ifndef CGRAPHICS_TERRAIN_H
 #define CGRAPHICS_TERRAIN_H
 #include <vector>
-#include "../model/Model.h"
-#include "../model/Mesh.h"
+#include <string>
+#include <glm/glm.hpp>
+#include "TerrainModel.h"
 
 class Terrain {
 public:
@@ -15,7 +16,7 @@ public:
         z = gridZ * SIZE;
     }
 
-    Mesh generateTerrain();
+    TerrainModel generateTerrain();
 private:
     float SIZE = 800;
     int VERTEX_COUNT = 128;
@@ -24,15 +25,8 @@ private:
     float z;
 
     std::vector<Vertex> vertices;
-    std::vector<Vertex> normals;
-    std::vector<Vertex> textureCords;
     std::vector<unsigned> indices;
 
-    Texture loadTerrainTexture(const char* path);
-
-    Mesh terrainMesh = generateTerrain();
-public:
-    const Mesh &getTerrainMesh() const;
 };
 
 

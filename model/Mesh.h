@@ -9,17 +9,7 @@
 #include "Shader.h"
 #include <string>
 #include <vector>
-struct Vertex {
-    glm::vec3 Position;
-    glm::vec3 Normal;
-    glm::vec2 TexCoords;
-};
-
-struct Texture {
-    unsigned id;
-    std::string type;
-    std::string path;
-};
+#include "../tools/DataStructs.h"
 
 class Mesh {
     public:

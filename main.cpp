@@ -55,8 +55,9 @@ int main() {
     Model bridgeModel(bridgePath.c_str());
     Model streetLampModel(streetLampPath.c_str());
     Terrain terrain(0,0);
-    Mesh terrainMesh = terrain.getTerrainMesh();
-    Shader terrainShader("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
+    TerrainModel terrainModel = terrain.generateTerrain();
+
+    Shader terrainShader("../resources/shaders/terrain.vs", "../resources/shaders/model_load.fs");
 
 
     glViewport(0, 0, 800, 600);
@@ -67,7 +68,7 @@ int main() {
 
         processInput(window);
 
-        glClearColor(0.921f, 0.419f, 0.776f, 1.0f);
+        glClearColor(0.529f, 0.807f, 0.921f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         streetLampShader.use();
@@ -94,8 +95,9 @@ int main() {
         model1 = glm::scale(model1,glm::vec3(150.0f,150.0f,150.0f));
 
         glm::mat4 model2 = glm::mat4(1.0f);
-        model2 = glm::translate(model2,glm::vec3(0.0f,0.0f,0.0f));
-        model2 = glm::scale(model2, glm::vec3(1000.0f,1000.0f,1000.0f));
+        model2 = glm::translate(model2,glm::vec3(-50.0f,-0.50f,-50.0f));
+//        model2 = glm::rotate(model2, glm::radians(-90.0f), glm::vec3(0.0f,1.0f,0.0f));
+        model2 = glm::scale(model2, glm::vec3(1.0f,0.0f,1.0f));
 
 
 
@@ -105,7 +107,7 @@ int main() {
         streetLampShader.setMat4("model", model1);
         streetLampModel.Draw(streetLampShader);
         terrainShader.setMat4("model",model2);
-        terrainMesh.Draw(terrainShader);
+        terrainModel.Draw(terrainShader);
         glfwPollEvents();
         glfwSwapBuffers(window);
     }
