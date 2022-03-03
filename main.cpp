@@ -51,11 +51,13 @@ int main() {
     std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
     std::string streetLampPath = std::filesystem::path("../resources/models/Street_Lamp_1.obj");
     Shader streetLampShader("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
+
     Shader streetLampShader1("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
     Model bridgeModel(bridgePath.c_str());
     Model streetLampModel(streetLampPath.c_str());
     Model streetLampModel1(streetLampPath.c_str());
-1;
+
+
     glViewport(0, 0, 800, 600);
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -70,6 +72,7 @@ int main() {
         streetLampShader.use();
         streetLampShader1.use();
         bridgeShader.use();
+      
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom),(float)SCR_WIDTH/(float)SCR_HEIGHT,0.1f,100.0f);
         glm::mat4 view = camera.GetViewMatrix();
         bridgeShader.setMat4("projection",projection);
