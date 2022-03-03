@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <glm/gtc/matrix_transform.hpp>
 #include "model/Camera.h"
+#include "terrain/Terrain.h"
 
 Camera camera(glm::vec3(0.0f,0.3f,5.5f));
 const unsigned int SCR_WIDTH = 800;
@@ -47,40 +48,34 @@ int main() {
     stbi_set_flip_vertically_on_load(true);
     glEnable(GL_DEPTH_TEST);
 
-    Shader bridgeShader("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
+    Shader shaderProgram("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
     std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
     std::string streetLampPath = std::filesystem::path("../resources/models/Street_Lamp_1.obj");
-    Shader streetLampShader("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
 
-    Shader streetLampShader1("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
     Model bridgeModel(bridgePath.c_str());
     Model streetLampModel(streetLampPath.c_str());
-    Model streetLampModel1(streetLampPath.c_str());
 
+    Terrain terrain(0, 0, 800);
+    TerrainModel terrainModel = terrain.generateTerrain();
 
     glViewport(0, 0, 800, 600);
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     while(!glfwWindowShouldClose(window)){
-
+        glGetError();
         processInput(window);
 
-        glClearColor(0.921f, 0.419f, 0.776f, 1.0f);
+        glClearColor(0.529f, 0.807f, 0.921f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        streetLampShader.use();
-        streetLampShader1.use();
-        bridgeShader.use();
-      
+        shaderProgram.use();
+
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom),(float)SCR_WIDTH/(float)SCR_HEIGHT,0.1f,100.0f);
         glm::mat4 view = camera.GetViewMatrix();
-        bridgeShader.setMat4("projection",projection);
-        bridgeShader.setMat4("view",view);
-        streetLampShader.setMat4("projection",projection);
-        streetLampShader.setMat4("view",view);
-        streetLampShader1.setMat4("projection",projection);
-        streetLampShader1.setMat4("view",view);
+        shaderProgram.setMat4("projection", projection);
+        shaderProgram.setMat4("view", view);
+
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f,0.0f,0.0f));
@@ -88,22 +83,33 @@ int main() {
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0, 0.0, 0.0));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
 
-        glm::mat4 model1 = glm::mat4(1.0f);
-        //model1 = glm::translate(model1, glm::vec3(0.0f,0.0f,10.0f));
-        model1 = glm::scale(model1,glm::vec3(0.5f,0.5f,0.5f));
-        model1 = glm::translate(model1,glm::vec3(2.7f,-1.09f,0.6f));
-        //model1 = glm::rotate(model1,glm::radians(90.0f),glm::vec3(1.0,0.0,0.0));
+        shaderProgram.setMat4("model", model);
+        bridgeModel.Draw(shaderProgram);
+        model = glm::mat4(1.0f);
 
-        glm::mat4 model2 = glm::mat4(1.0f);
-        model2 = glm::scale(model2,glm::vec3(0.5f,0.5f,0.5f));
-        model2 = glm::translate(model2, glm::vec3(-2.7f,-1.09f,-0.6f));
 
-        bridgeShader.setMat4("model", model);
-        bridgeModel.Draw(bridgeShader);
-        streetLampShader.setMat4("model", model1);
-        streetLampModel.Draw(streetLampShader);
-        streetLampShader1.setMat4("model",model2);
-        streetLampModel1.Draw(streetLampShader1);
+        model = glm::scale(model,glm::vec3(0.5f,0.5f,0.5f));
+        model = glm::translate(model,glm::vec3(2.7f,-1.09f,0.6f));
+
+        shaderProgram.setMat4("model", model);
+        streetLampModel.Draw(shaderProgram);
+
+        model = glm::mat4(1.0f);
+        model = glm::scale(model,glm::vec3(0.5f,0.5f,0.5f));
+        model = glm::translate(model, glm::vec3(-2.7f,-1.09f,-0.6f));
+
+        shaderProgram.setMat4("model", model);
+        streetLampModel.Draw(shaderProgram);
+
+        model = glm::mat4(1.0f);
+        model = glm::translate(model,glm::vec3(-50.0f,-0.50f,-50.0f));
+        model = glm::scale(model, glm::vec3(1.0f,0.0f,1.0f));
+
+
+
+        shaderProgram.setMat4("model", model);
+        terrainModel.Draw(shaderProgram);
+
         glfwPollEvents();
         glfwSwapBuffers(window);
     }
