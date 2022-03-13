@@ -16,6 +16,9 @@ float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 
+glm::vec3 lightPos (100.0f, 100.0f, 100.0f);
+glm::vec3 lightColor (1.0f,1.0f,1.0f);
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -50,7 +53,7 @@ int main() {
 
     Shader shaderProgram("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
     std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
-    std::string streetLampPath = std::filesystem::path("../resources/models/Street_Lamp_1.obj");
+    std::string streetLampPath = std::filesystem::path("../resources/models/StreetLamp/objLamp.obj");
 
     Model bridgeModel(bridgePath.c_str());
     Model streetLampModel(streetLampPath.c_str());
@@ -61,6 +64,9 @@ int main() {
     glViewport(0, 0, 800, 600);
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+
+
 
     while(!glfwWindowShouldClose(window)){
         glGetError();
@@ -75,7 +81,8 @@ int main() {
         glm::mat4 view = camera.GetViewMatrix();
         shaderProgram.setMat4("projection", projection);
         shaderProgram.setMat4("view", view);
-
+        shaderProgram.setVec3("lightCol", lightColor);
+        shaderProgram.setVec3("lightPos", lightPos);
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f,0.0f,0.0f));
@@ -88,15 +95,15 @@ int main() {
         model = glm::mat4(1.0f);
 
 
-        model = glm::scale(model,glm::vec3(0.5f,0.5f,0.5f));
-        model = glm::translate(model,glm::vec3(2.7f,-1.09f,0.6f));
+        model = glm::scale(model,glm::vec3(0.15f,0.15f,0.15f));
+        model = glm::translate(model,glm::vec3(8.7f,-3.09f,5.5f));
 
         shaderProgram.setMat4("model", model);
         streetLampModel.Draw(shaderProgram);
 
         model = glm::mat4(1.0f);
-        model = glm::scale(model,glm::vec3(0.5f,0.5f,0.5f));
-        model = glm::translate(model, glm::vec3(-2.7f,-1.09f,-0.6f));
+        model = glm::scale(model,glm::vec3(0.15f,0.15f,0.15f));
+        model = glm::translate(model, glm::vec3(-8.7f,-3.09f,-5.5f));
 
         shaderProgram.setMat4("model", model);
         streetLampModel.Draw(shaderProgram);
