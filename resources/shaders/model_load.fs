@@ -12,6 +12,7 @@ uniform sampler2D texture_diffuse1;
 
 void main()
 {
+
     float ambientStrength = 0.5;
     vec3 ambient = ambientStrength * lightCol;
     vec3 norm = normalize(Normal);
@@ -29,4 +30,9 @@ void main()
     vec3 specular = specularStrength * spec * lightCol;
     vec4 result = (vec4(ambient + diffuse + specular, 1.0f)) * texture(texture_diffuse1, TexCoords);
     FragColor = result;
+
+    if( FragColor.a < 0.1)
+    {
+        discard;
+    }
 }

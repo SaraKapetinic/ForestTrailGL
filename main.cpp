@@ -53,7 +53,7 @@ int main() {
 
     Shader shaderProgram("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
     std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
-    std::string streetLampPath = std::filesystem::path("../resources/models/StreetLamp/objLamp.obj");
+    std::string streetLampPath = std::filesystem::path("../resources/models/StreetLamp/StreetLamp.obj");
 
     Model bridgeModel(bridgePath.c_str());
     Model streetLampModel(streetLampPath.c_str());
