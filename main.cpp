@@ -65,9 +65,6 @@ int main() {
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-
-
-
     while(!glfwWindowShouldClose(window)){
         glGetError();
         processInput(window);
@@ -83,6 +80,8 @@ int main() {
         shaderProgram.setMat4("view", view);
         shaderProgram.setVec3("lightCol", lightColor);
         shaderProgram.setVec3("lightPos", lightPos);
+        shaderProgram.setVec3("viewPos",camera.Position);
+        
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f,0.0f,0.0f));

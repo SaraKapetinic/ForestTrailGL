@@ -141,7 +141,7 @@ unsigned Model::TextureFromFile(const char *path, const std::string &directory) 
             format = GL_RGB;
         else if (nrComponents == 4)
             format = GL_RGBA;
-        
+
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
