@@ -57,9 +57,12 @@ int main() {
     Shader shaderProgram("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
     std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
     std::string streetLampPath = std::filesystem::path("../resources/models/StreetLamp/StreetLamp.obj");
+    std::string lightBulbPath = std::filesystem::path("../resources/models/LightBulb/lightBulb.obj");
+
 
     Model bridgeModel(bridgePath.c_str());
     Model streetLampModel(streetLampPath.c_str());
+    Model lightBulbModel(lightBulbPath.c_str());
 
     Terrain terrain(0, 0, 800);
     TerrainModel terrainModel = terrain.generateTerrain();
@@ -115,6 +118,19 @@ int main() {
         streetLampModel.Draw(shaderProgram);
 
         model = glm::mat4(1.0f);
+        model = glm::translate(model,glm::vec3(-1.3f,0.95f,-0.83f));
+        model = glm::scale(model,glm::vec3(0.015f,0.015f,0.015f));
+        shaderProgram.setMat4("model",model);
+        lightBulbModel.Draw(shaderProgram);
+
+
+        model = glm::mat4(1.0f);
+        model = glm::translate(model,glm::vec3(1.3f,0.95f,0.83f));
+        model = glm::scale(model,glm::vec3(0.015f,0.015f,0.015f));
+        shaderProgram.setMat4("model",model);
+        lightBulbModel.Draw(shaderProgram);
+
+        model = glm::mat4(1.0f);
         model = glm::scale(model,glm::vec3(0.15f,0.15f,0.15f));
         model = glm::translate(model, glm::vec3(-8.7f,-3.09f,-5.5f));
 
@@ -124,8 +140,6 @@ int main() {
         model = glm::mat4(1.0f);
         model = glm::translate(model,glm::vec3(-50.0f,-0.50f,-50.0f));
         model = glm::scale(model, glm::vec3(1.0f,0.0f,1.0f));
-
-
 
         shaderProgram.setMat4("model", model);
         terrainModel.Draw(shaderProgram);
