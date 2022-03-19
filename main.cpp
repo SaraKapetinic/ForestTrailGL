@@ -156,9 +156,22 @@ void processInput(GLFWwindow* window){
 
     float speed = 0.05f;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.Position += speed * camera.Front;
+        if(camera.Position.y > 0 )
+            camera.Position += speed * camera.Front;
+        else {
+            if(camera.Position.y <= 0)
+                if(camera.Front.y > 0 )
+                    camera.Position += speed * camera.Front;
+        }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.Position -= speed * camera.Front;
+
+        if(camera.Position.y > 0 )
+            camera.Position -= speed * camera.Front;
+        else {
+            if(camera.Position.y <= 0)
+                if(camera.Front.y < 0 )
+                    camera.Position -= speed * camera.Front;
+        }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
         camera.Position -= glm::normalize(glm::cross(camera.Front, camera.Up)) * speed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
