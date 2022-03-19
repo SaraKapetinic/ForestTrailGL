@@ -8,6 +8,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "model/Camera.h"
 #include "terrain/Terrain.h"
+#include "skybox/SkyBox.h"
 
 Camera camera(glm::vec3(0.0f,0.3f,5.5f));
 const unsigned int SCR_WIDTH = 800;
@@ -62,7 +63,18 @@ int main() {
 
     Terrain terrain(0, 0, 800);
     TerrainModel terrainModel = terrain.generateTerrain();
+    std::vector<std::string> skyboxFaces = {
+            "../resources/skybox/daylight/right.bmp",
+            "../resources/skybox/daylight/left.bmp",
+            "../resources/skybox/daylight/top.bmp",
+            "../resources/skybox/daylight/bottom.bmp",
+            "../resources/skybox/daylight/back.bmp",
+            "../resources/skybox/daylight/front.bmp"
+    };
 
+    SkyBox skyBox(skyboxFaces);
+
+    Shader skyBoxShader("../resources/shaders/skybox.vs","../resources/shaders/skybox.fs");
     glViewport(0, 0, 800, 600);
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -118,6 +130,14 @@ int main() {
         shaderProgram.setMat4("model", model);
         terrainModel.Draw(shaderProgram);
 
+        glDepthFunc(GL_LEQUAL);
+        skyBoxShader.use();
+        skyBoxShader.setInt("skybox", 0);
+        view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
+        skyBoxShader.setMat4("view", view);
+        skyBoxShader.setMat4("projection", projection);
+        skyBox.Draw();
+        glDepthFunc(GL_LESS);
         glfwPollEvents();
         glfwSwapBuffers(window);
     }
