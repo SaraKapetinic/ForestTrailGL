@@ -25,7 +25,7 @@ TerrainModel Terrain::generateTerrain() {
             z = (float)i/((float)VERTEX_COUNT - 1);
             //std::cout << getHeight(j,i) << std::endl;
             glm::vec3 Position( x * SIZE, getHeight(j,i),  z * SIZE);
-            glm::vec3 Normal(0.0f,1.0f,0.0f);
+            glm::vec3 Normal = getNormal(j,i);
             glm::vec2 TextureCords(x, z);
             Vertex v;
             v.Position = Position;
@@ -81,4 +81,17 @@ float Terrain::getHeight(int x, int y) {
     r-=20;
     return r;
 }
+
+glm::vec3 Terrain::getNormal(int x, int y) {
+    float heightL, heightR;
+    float heightU, heightD;
+    heightL = getHeight(x-1, y);
+    heightR = getHeight(x+1, y);
+    heightU = getHeight(x, y+1);
+    heightD = getHeight(x, y-1);
+    glm::vec3 normal(heightL-heightR,2.0f,heightD-heightU);
+    return glm::normalize(normal);
+}
+
+
 

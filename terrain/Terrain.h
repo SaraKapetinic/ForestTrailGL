@@ -38,6 +38,7 @@ private:
 
     void loadHeightMap(std::string path);
     float getHeight(int x, int y);
+    glm::vec3 getNormal(int x, int y);
 };
 
 
