@@ -61,7 +61,7 @@ int main() {
     Model bridgeModel(bridgePath.c_str());
     Model streetLampModel(streetLampPath.c_str());
 
-    Terrain terrain(0, 0, 800);
+    Terrain terrain(0, 0, 25);
     TerrainModel terrainModel = terrain.generateTerrain();
     std::vector<std::string> skyboxFaces = {
             "../resources/skybox/daylight/right.bmp",
@@ -98,32 +98,35 @@ int main() {
         
 
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f,0.0f,0.0f));
-        model = glm::scale(model, glm::vec3(0.008f, 0.008f, 0.008f));
+        model = glm::translate(model, glm::vec3(1.6f,1.5f,0.0f));
+        model = glm::scale(model, glm::vec3(0.06f, 0.06f, 0.05f));
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0, 0.0, 0.0));
-        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+        model = glm::rotate(model, glm::radians(60.0f), glm::vec3(0.0, 0.0, 1.0));
+
 
         shaderProgram.setMat4("model", model);
         bridgeModel.Draw(shaderProgram);
         model = glm::mat4(1.0f);
 
 
-        model = glm::scale(model,glm::vec3(0.15f,0.15f,0.15f));
-        model = glm::translate(model,glm::vec3(8.7f,-3.09f,5.5f));
+        model = glm::scale(model,glm::vec3(0.5f,0.5f,0.5f));
+        model = glm::translate(model,glm::vec3(16.0f,-1.0f,15.5f));
+        model = glm::rotate(model,glm::radians(60.0f), glm::vec3(0.0,1.0,0.0));
 
         shaderProgram.setMat4("model", model);
         streetLampModel.Draw(shaderProgram);
 
         model = glm::mat4(1.0f);
-        model = glm::scale(model,glm::vec3(0.15f,0.15f,0.15f));
-        model = glm::translate(model, glm::vec3(-8.7f,-3.09f,-5.5f));
+        model = glm::scale(model,glm::vec3(0.5f,0.5f,0.5f));
+        model = glm::translate(model, glm::vec3(-10.0f,-1.0f,-13.5f));
+        model = glm::rotate(model,glm::radians(60.0f), glm::vec3(0.0,1.0,0.0));
 
         shaderProgram.setMat4("model", model);
         streetLampModel.Draw(shaderProgram);
 
         model = glm::mat4(1.0f);
-        model = glm::translate(model,glm::vec3(-50.0f,-0.50f,-50.0f));
-        model = glm::scale(model, glm::vec3(1.0f,0.0f,1.0f));
+        model = glm::translate(model,glm::vec3(-terrain.getSize()/2.0f * 0.25,-0.50f,-terrain.getSize()/2.0f * 0.25) );
+        model = glm::scale(model, glm::vec3(0.25f,0.25f,0.25f));
 
 
 

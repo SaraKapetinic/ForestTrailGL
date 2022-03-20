@@ -4,16 +4,29 @@
 
 #include "Terrain.h"
 #include <iostream>
+#include "../model/stb_image.h"
 
 TerrainModel Terrain::generateTerrain() {
+
+    loadHeightMap("../resources/heightmap.png");
+    if(heightMap == nullptr) {
+        std::cout << "Error loading heightmap!" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    VERTEX_COUNT = heightMapHeight;
     indices.resize(6*(VERTEX_COUNT-1)*(VERTEX_COUNT-1));
 
 
     for(int i=0;i<VERTEX_COUNT;i++){
         for(int j=0;j<VERTEX_COUNT;j++){
-            glm::vec3 Position((float)j/((float)VERTEX_COUNT - 1) * SIZE, 0, (float)i/((float)VERTEX_COUNT - 1) * SIZE);
-            glm::vec3 Normal(0.0f,1.0f,0.0f);
-            glm::vec2 TextureCords((float)j/((float)VERTEX_COUNT - 1), (float)i/((float)VERTEX_COUNT - 1));
+            float x, z;
+            //std::cout << "x: " << x * SIZE << "z: " << z * SIZE << std::endl;
+            x = (float)j/((float)VERTEX_COUNT - 1);
+            z = (float)i/((float)VERTEX_COUNT - 1);
+            //std::cout << getHeight(j,i) << std::endl;
+            glm::vec3 Position( x * SIZE, getHeight(j,i),  z * SIZE);
+            glm::vec3 Normal = getNormal(j,i);
+            glm::vec2 TextureCords(x, z);
             Vertex v;
             v.Position = Position;
             v.Normal = Normal;
@@ -38,7 +51,47 @@ TerrainModel Terrain::generateTerrain() {
         }
     }
 
+    stbi_image_free(heightMap);
     return TerrainModel(vertices, indices);
 
 }
+
+void Terrain::loadHeightMap(std::string path) {
+    int nrChannels;
+    heightMap = stbi_load(path.c_str(),&heightMapWidth, &heightMapHeight, &nrChannels, 0);
+    if(!heightMap) {
+        stbi_image_free(heightMap);
+        heightMap = nullptr;
+    }
+}
+
+
+float Terrain::getSize() const {
+    return SIZE;
+}
+
+float Terrain::getHeight(int x, int y) {
+
+    if(x < 0 || x>=heightMapHeight || y < 0 || z>=heightMapHeight)
+        return 0;
+
+    float r = heightMap[4 * ( y * heightMapWidth + x)];
+    r/=255.0;
+    r*=40;
+    r-=20;
+    return r;
+}
+
+glm::vec3 Terrain::getNormal(int x, int y) {
+    float heightL, heightR;
+    float heightU, heightD;
+    heightL = getHeight(x-1, y);
+    heightR = getHeight(x+1, y);
+    heightU = getHeight(x, y+1);
+    heightD = getHeight(x, y-1);
+    glm::vec3 normal(heightL-heightR,2.0f,heightD-heightU);
+    return glm::normalize(normal);
+}
+
+
 

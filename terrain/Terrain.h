@@ -19,15 +19,26 @@ public:
 
     TerrainModel generateTerrain();
 private:
-    float SIZE = 800;
-    int VERTEX_COUNT = 128;
+    float SIZE = 1024;
+public:
+    float getSize() const;
+
+private:
+    int VERTEX_COUNT;
 
     float x;
     float z;
     float scale;
     std::vector<Vertex> vertices;
     std::vector<unsigned> indices;
+    int heightMapHeight;
+    int heightMapWidth;
 
+    unsigned char* heightMap;
+
+    void loadHeightMap(std::string path);
+    float getHeight(int x, int y);
+    glm::vec3 getNormal(int x, int y);
 };
 
 
