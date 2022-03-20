@@ -19,7 +19,10 @@ bool firstMouse = true;
 
 glm::vec3 lightPos (100.0f, 100.0f, 100.0f);
 glm::vec3 lightColor (1.0f,1.0f,1.0f);
-
+glm::vec3 bulbPos[] = {
+        glm::vec3(1.3f, 0.95f, 0.83f),
+        glm::vec3(-1.3f, 0.95f, -0.83f)
+};
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -58,7 +61,8 @@ int main() {
     std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
     std::string streetLampPath = std::filesystem::path("../resources/models/StreetLamp/StreetLamp.obj");
     std::string lightBulbPath = std::filesystem::path("../resources/models/LightBulb/lightBulb.obj");
-
+    Shader bulbShader("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
+    Shader bulbShader1("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
 
     Model bridgeModel(bridgePath.c_str());
     Model streetLampModel(streetLampPath.c_str());
@@ -90,6 +94,8 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shaderProgram.use();
+        bulbShader.use();
+        bulbShader1.use();
 
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom),(float)SCR_WIDTH/(float)SCR_HEIGHT,0.1f,100.0f);
         glm::mat4 view = camera.GetViewMatrix();
@@ -99,6 +105,21 @@ int main() {
         shaderProgram.setVec3("lightPos", lightPos);
         shaderProgram.setVec3("viewPos",camera.Position);
 
+        bulbShader1.setVec3("lightCol",lightColor);
+        bulbShader1.setMat4("projection", projection);
+        bulbShader1.setMat4("view", view);
+        bulbShader1.setVec3("lightPos",bulbPos[0]);
+        bulbShader1.setFloat("constant",  1.0f);
+        bulbShader1.setFloat("linear",    0.09f);
+        bulbShader1.setFloat("quadratic", 0.032f);
+
+        bulbShader.setVec3("lightCol",lightColor);
+        bulbShader.setMat4("projection", projection);
+        bulbShader.setMat4("view", view);
+        bulbShader.setVec3("lightPos",bulbPos[1]);
+        bulbShader.setFloat("constant",  1.0f);
+        bulbShader.setFloat("linear",    0.09f);
+        bulbShader.setFloat("quadratic", 0.032f);
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f,0.0f,0.0f));

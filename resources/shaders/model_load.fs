@@ -8,6 +8,7 @@ in vec3 FragPos;
 uniform vec3 lightCol;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
+
 uniform sampler2D texture_diffuse1;
 
 void main()
