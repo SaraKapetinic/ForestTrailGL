@@ -101,14 +101,14 @@ int main() {
         shaderProgram.setVec3("viewPos",camera.Position);
         shaderProgram.setVec3("pointLights[0].position", bulbPos[0]);
         shaderProgram.setVec3("pointLights[0].color", lightColor);
-        shaderProgram.setFloat("pointLights[0].constant", 0.2);
-        shaderProgram.setFloat("pointLights[0].linear",0.4);
-        shaderProgram.setFloat("pointLights[0].quadratic", 0.6);
+        shaderProgram.setFloat("pointLights[0].constant", 1.0);
+        shaderProgram.setFloat("pointLights[0].linear",0.22);
+        shaderProgram.setFloat("pointLights[0].quadratic", 0.20);
         shaderProgram.setVec3("pointLights[1].position", bulbPos[1]);
         shaderProgram.setVec3("pointLights[1].color", lightColor);
-        shaderProgram.setFloat("pointLights[1].constant", 0.2);
-        shaderProgram.setFloat("pointLights[1].linear",0.4);
-        shaderProgram.setFloat("pointLights[1].quadratic", 0.6);
+        shaderProgram.setFloat("pointLights[1].constant", 1.0);
+        shaderProgram.setFloat("pointLights[1].linear",0.22);
+        shaderProgram.setFloat("pointLights[1].quadratic", 0.20);
 
 
 
