@@ -154,10 +154,6 @@ int main() {
         shaderProgram.setMat4("model",model);
         lightBulbModel.Draw(shaderProgram);
 
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model,glm::vec3(1.3f,0.95f,0.83f));
-        model = glm::scale(model,glm::vec3(0.015f,0.015f,0.015f));
         shaderProgram.setMat4("model",model);
         lightBulbModel.Draw(shaderProgram);
 
