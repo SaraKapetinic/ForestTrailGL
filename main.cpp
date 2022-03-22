@@ -24,7 +24,14 @@ bool firstMouse = true;
 glm::vec3 lightPos (100.0f, 100.0f, 100.0f);
 glm::vec3 lightColor (1.0f,1.0f,1.0f);
 
+
 bool ImguiEnable= false;
+
+
+glm::vec3 bulbPos[] = {
+        glm::vec3(-5.0f, 4.2f, -6.75f),
+        glm::vec3(8.03f, 4.2f, 7.75f)
+};
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn);
@@ -75,9 +82,11 @@ int main() {
     Shader shaderProgram("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
     std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
     std::string streetLampPath = std::filesystem::path("../resources/models/StreetLamp/StreetLamp.obj");
+    std::string lightBulbPath = std::filesystem::path("../resources/models/LightBulb/lightBulb.obj");
 
     Model bridgeModel(bridgePath.c_str());
     Model streetLampModel(streetLampPath.c_str());
+    Model lightBulbModel(lightBulbPath.c_str());
 
     Terrain terrain(0, 0, 25);
     TerrainModel terrainModel = terrain.generateTerrain();
@@ -109,12 +118,22 @@ int main() {
 
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom),(float)SCR_WIDTH/(float)SCR_HEIGHT,0.1f,100.0f);
         glm::mat4 view = camera.GetViewMatrix();
+
         shaderProgram.setMat4("projection", projection);
         shaderProgram.setMat4("view", view);
-        shaderProgram.setVec3("lightCol", lightColor);
-        shaderProgram.setVec3("lightPos", lightPos);
         shaderProgram.setVec3("viewPos",camera.Position);
-        
+        shaderProgram.setVec3("pointLights[0].position", bulbPos[0]);
+        shaderProgram.setVec3("pointLights[0].color", lightColor);
+        shaderProgram.setFloat("pointLights[0].constant", 1.0);
+        shaderProgram.setFloat("pointLights[0].linear",0.22);
+        shaderProgram.setFloat("pointLights[0].quadratic", 0.20);
+        shaderProgram.setVec3("pointLights[1].position", bulbPos[1]);
+        shaderProgram.setVec3("pointLights[1].color", lightColor);
+        shaderProgram.setFloat("pointLights[1].constant", 1.0);
+        shaderProgram.setFloat("pointLights[1].linear",0.22);
+        shaderProgram.setFloat("pointLights[1].quadratic", 0.20);
+
+
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(1.6f,1.5f,0.0f));
@@ -139,15 +158,34 @@ int main() {
         model = glm::scale(model,glm::vec3(0.5f,0.5f,0.5f));
         model = glm::translate(model, glm::vec3(-10.0f,-1.0f,-13.5f));
         model = glm::rotate(model,glm::radians(60.0f), glm::vec3(0.0,1.0,0.0));
-
         shaderProgram.setMat4("model", model);
         streetLampModel.Draw(shaderProgram);
+
+        model = glm::mat4 (1.0f);
+        model = glm::translate(model,bulbPos[0]);
+        model = glm::scale(model,glm::vec3(0.07f,0.07f,0.07f));
+
+
+        shaderProgram.setMat4("model",model);
+        lightBulbModel.Draw(shaderProgram);
+
+        model = glm::mat4 (1.0f);
+        model = glm::translate(model,bulbPos[1]);
+        model = glm::scale(model,glm::vec3(0.07f,0.07f,0.07f));
+
+
+        shaderProgram.setMat4("model",model);
+        lightBulbModel.Draw(shaderProgram);
+
+        shaderProgram.setMat4("model",model);
+        lightBulbModel.Draw(shaderProgram);
+
+
+
 
         model = glm::mat4(1.0f);
         model = glm::translate(model,glm::vec3(-terrain.getSize()/2.0f * 0.25,-0.50f,-terrain.getSize()/2.0f * 0.25) );
         model = glm::scale(model, glm::vec3(0.25f,0.25f,0.25f));
-
-
 
         shaderProgram.setMat4("model", model);
         terrainModel.Draw(shaderProgram);
@@ -265,4 +303,5 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods){
 
         }
     }
-}
+
+
