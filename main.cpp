@@ -1,3 +1,7 @@
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -20,10 +24,14 @@ bool firstMouse = true;
 glm::vec3 lightPos (100.0f, 100.0f, 100.0f);
 glm::vec3 lightColor (1.0f,1.0f,1.0f);
 
+bool ImguiEnable= false;
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
+void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods);
+void DrawImgui();
 
 int main() {
     glfwInit();
@@ -41,6 +49,7 @@ int main() {
     glfwMakeContextCurrent(window);
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
+    glfwSetKeyCallback(window,key_callback);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -53,6 +62,15 @@ int main() {
     glEnable(GL_DEPTH_TEST);
 
     glEnable(GL_CULL_FACE);
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();(void)io;
+
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplGlfw_InitForOpenGL(window,true);
+    ImGui_ImplOpenGL3_Init("#version 330 core");
 
     Shader shaderProgram("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
     std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
@@ -82,6 +100,7 @@ int main() {
     while(!glfwWindowShouldClose(window)){
         glGetError();
         processInput(window);
+
 
         glClearColor(0.529f, 0.807f, 0.921f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -141,9 +160,18 @@ int main() {
         skyBoxShader.setMat4("projection", projection);
         skyBox.Draw();
         glDepthFunc(GL_LESS);
+
+        if(ImguiEnable){
+            DrawImgui();
+        }
+
+
         glfwPollEvents();
         glfwSwapBuffers(window);
     }
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
     glfwTerminate();
     return 0;
@@ -179,7 +207,7 @@ void processInput(GLFWwindow* window){
         camera.Position -= glm::normalize(glm::cross(camera.Front, camera.Up)) * speed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.Position += glm::normalize(glm::cross(camera.Front, camera.Up)) * speed;
-    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS){
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 }
@@ -201,11 +229,40 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
     lastX = xpos;
     lastY = ypos;
-
-    camera.ProcessMouseMovement(xoffset, yoffset);
+    if(ImguiEnable == false){
+        camera.ProcessMouseMovement(xoffset, yoffset);
+    }
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     camera.ProcessMouseScroll(static_cast<float>(yoffset));
+}
+void DrawImgui(){
+
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    {
+        ImGui::Begin("Test");
+        ImGui::Text("CGraphics");
+        ImGui::End();
+    }
+
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+
+}
+void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods){
+    if(key == GLFW_KEY_I && action == GLFW_PRESS){
+        ImguiEnable = !ImguiEnable;
+        if(ImguiEnable) {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }else{
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+        }
+    }
 }
