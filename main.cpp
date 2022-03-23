@@ -21,15 +21,19 @@ float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 
 glm::vec3 lightPos (100.0f, 100.0f, 100.0f);
-glm::vec3 lightColor (1.0f,1.0f,1.0f);
 
 struct ProgramState{
     bool ImguiEnable= false;
     void LoadFromDisk(std::string path);
     void SaveToDisk(std::string path) ;
     Camera camera;
+    glm::vec3 lightColor;
+    glm::vec3 lightColor1;
+
     ProgramState()
-    :camera(glm::vec3(0.0f,0.3f,5.5f)){}
+    :camera(glm::vec3(0.0f,0.3f,5.5f)),lightColor(glm::vec3(1.0f,1.0f,1.0f))
+    ,lightColor1(glm::vec3(1.0f,1.0f,1.0f)){}
+
 
 };
 
@@ -44,7 +48,13 @@ void ProgramState::SaveToDisk(std::string path) {
     <<camera.Front.y<<'\n'
     <<camera.Front.z<<'\n'
     <<camera.Pitch<<'\n'
-    <<camera.Yaw;
+    <<camera.Yaw<<'\n'
+    <<lightColor.r<<'\n'
+    <<lightColor.g<<'\n'
+    <<lightColor.b<<'\n'
+    <<lightColor1.r<<'\n'
+    <<lightColor1.g<<'\n'
+    <<lightColor1.b;
 }
 
 void ProgramState::LoadFromDisk(std::string path) {
@@ -59,7 +69,13 @@ void ProgramState::LoadFromDisk(std::string path) {
         >>camera.Front.y
         >>camera.Front.z
         >>camera.Pitch
-        >>camera.Yaw;
+        >>camera.Yaw
+        >>lightColor.r
+        >>lightColor.g
+        >>lightColor.b
+        >>lightColor1.r
+        >>lightColor1.g
+        >>lightColor1.b;
     }
 }
 
@@ -168,12 +184,12 @@ int main() {
         shaderProgram.setMat4("view", view);
         shaderProgram.setVec3("viewPos",programState->camera.Position);
         shaderProgram.setVec3("pointLights[0].position", bulbPos[0]);
-        shaderProgram.setVec3("pointLights[0].color", lightColor);
+        shaderProgram.setVec3("pointLights[0].color", programState->lightColor);
         shaderProgram.setFloat("pointLights[0].constant", 1.0);
         shaderProgram.setFloat("pointLights[0].linear",0.22);
         shaderProgram.setFloat("pointLights[0].quadratic", 0.20);
         shaderProgram.setVec3("pointLights[1].position", bulbPos[1]);
-        shaderProgram.setVec3("pointLights[1].color", lightColor);
+        shaderProgram.setVec3("pointLights[1].color", programState->lightColor1);
         shaderProgram.setFloat("pointLights[1].constant", 1.0);
         shaderProgram.setFloat("pointLights[1].linear",0.22);
         shaderProgram.setFloat("pointLights[1].quadratic", 0.20);
@@ -329,6 +345,8 @@ void DrawImgui(ProgramState* programState){
     {
         ImGui::Begin("Test");
         ImGui::Text("CGraphics");
+        ImGui::ColorEdit3("Bulb color",(float*)&programState->lightColor);
+        ImGui::ColorEdit3("Bulb color1",(float*)&programState->lightColor1);
         ImGui::End();
     }
 
