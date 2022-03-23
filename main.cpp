@@ -33,7 +33,7 @@ struct ProgramState{
     ProgramState()
     :camera(glm::vec3(0.0f,0.3f,5.5f)),lightColor(glm::vec3(1.0f,1.0f,1.0f))
     ,lightColor1(glm::vec3(1.0f,1.0f,1.0f)){}
-    
+
 };
 
 void ProgramState::SaveToDisk(std::string path) {
@@ -338,6 +338,12 @@ void DrawImgui(ProgramState* programState){
     ImGui::NewFrame();
 
     {
+        ImGuiIO io = ImGui::GetIO();
+        float display_width = (float)io.DisplaySize.x;
+        float display_height = (float)io.DisplaySize.y;
+        float pos_x = display_width*0.6;
+        float pos_y = display_height*0.7;
+        ImGui::SetNextWindowPos(ImVec2(pos_x,pos_y),ImGuiCond_FirstUseEver);
         ImGui::Begin("CGraphics");
         ImGui::ColorEdit3("Bulb color",(float*)&programState->lightColor);
         ImGui::ColorEdit3("Bulb color1",(float*)&programState->lightColor1);
@@ -345,6 +351,12 @@ void DrawImgui(ProgramState* programState){
     }
 
     {
+        ImGuiIO io = ImGui::GetIO();
+        float display_width = (float)io.DisplaySize.x;
+        float display_height = (float)io.DisplaySize.y;
+        float pos_x = display_width*0.6;
+        float pos_y = display_height*0.3;
+        ImGui::SetNextWindowPos(ImVec2(pos_x,pos_y),ImGuiCond_FirstUseEver);
         ImGui::Begin("Camera");
         auto &c = programState->camera;
         ImGui::Text("Camera position: (%f, %f, %f)",c.Position.x,c.Position.y,c.Position.z);
