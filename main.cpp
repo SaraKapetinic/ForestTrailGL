@@ -30,6 +30,8 @@ struct ProgramState{
     glm::vec3 lightColor;
     glm::vec3 lightColor1;
     bool EnableMouseMovement = true;
+    float linear = 0.09;
+    float quadratic = 0.032;
     ProgramState()
     :camera(glm::vec3(0.0f,0.3f,5.5f)),lightColor(glm::vec3(1.0f,1.0f,1.0f))
     ,lightColor1(glm::vec3(1.0f,1.0f,1.0f)){}
@@ -184,13 +186,13 @@ int main() {
         shaderProgram.setVec3("pointLights[0].position", bulbPos[0]);
         shaderProgram.setVec3("pointLights[0].color", programState->lightColor);
         shaderProgram.setFloat("pointLights[0].constant", 1.0);
-        shaderProgram.setFloat("pointLights[0].linear",0.22);
-        shaderProgram.setFloat("pointLights[0].quadratic", 0.20);
+        shaderProgram.setFloat("pointLights[0].linear",programState->linear);
+        shaderProgram.setFloat("pointLights[0].quadratic", programState->quadratic);
         shaderProgram.setVec3("pointLights[1].position", bulbPos[1]);
         shaderProgram.setVec3("pointLights[1].color", programState->lightColor1);
         shaderProgram.setFloat("pointLights[1].constant", 1.0);
-        shaderProgram.setFloat("pointLights[1].linear",0.22);
-        shaderProgram.setFloat("pointLights[1].quadratic", 0.20);
+        shaderProgram.setFloat("pointLights[1].linear",programState->linear);
+        shaderProgram.setFloat("pointLights[1].quadratic", programState->quadratic);
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(1.6f,1.5f,0.0f));
@@ -343,10 +345,37 @@ void DrawImgui(ProgramState* programState){
         float display_height = (float)io.DisplaySize.y;
         float pos_x = display_width*0.6;
         float pos_y = display_height*0.7;
+        //ImGui::SetWindowPos(ImVec2(pos_x,pos_y));
         ImGui::SetNextWindowPos(ImVec2(pos_x,pos_y),ImGuiCond_FirstUseEver);
         ImGui::Begin("CGraphics");
         ImGui::ColorEdit3("Bulb color",(float*)&programState->lightColor);
         ImGui::ColorEdit3("Bulb color1",(float*)&programState->lightColor1);
+
+        ImGui::Text("Linear intensity");
+        if(ImGui::RadioButton("0.7",&programState->linear)){
+            programState->linear = 0.7;
+            ImGui::SameLine();
+        }
+        else if(ImGui::RadioButton("0.22",&programState->linear)){
+            programState->linear = 0.22;
+            ImGui::SameLine();
+        }
+        else if(ImGui::RadioButton("0.09",&programState->linear)){
+            programState->linear = 0.09;
+        }
+        ImGui::NextColumn();
+        ImGui::Text("Quadratic intensity");
+        if(ImGui::RadioButton("1.8",&programState->quadratic)){
+            programState->quadratic = 1.8;
+            ImGui::SameLine();
+        }
+        else if(ImGui::RadioButton("0.2",&programState->quadratic)){
+            programState->quadratic = 0.2;
+            ImGui::SameLine();
+        }
+        else if(ImGui::RadioButton("0.032",&programState->quadratic)){
+            programState->quadratic = 0.032;
+        }
         ImGui::End();
     }
 
@@ -356,6 +385,7 @@ void DrawImgui(ProgramState* programState){
         float display_height = (float)io.DisplaySize.y;
         float pos_x = display_width*0.6;
         float pos_y = display_height*0.3;
+        //ImGui::SetWindowPos(ImVec2(pos_x,pos_y));
         ImGui::SetNextWindowPos(ImVec2(pos_x,pos_y),ImGuiCond_FirstUseEver);
         ImGui::Begin("Camera");
         auto &c = programState->camera;
@@ -384,3 +414,5 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
     }
 
 }
+
+
