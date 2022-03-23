@@ -29,12 +29,11 @@ struct ProgramState{
     Camera camera;
     glm::vec3 lightColor;
     glm::vec3 lightColor1;
-
+    bool EnableMouseMovement = true;
     ProgramState()
     :camera(glm::vec3(0.0f,0.3f,5.5f)),lightColor(glm::vec3(1.0f,1.0f,1.0f))
     ,lightColor1(glm::vec3(1.0f,1.0f,1.0f)){}
-
-
+    
 };
 
 void ProgramState::SaveToDisk(std::string path) {
@@ -171,7 +170,6 @@ int main() {
         glGetError();
         processInput(window);
 
-
         glClearColor(0.529f, 0.807f, 0.921f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -204,7 +202,6 @@ int main() {
         bridgeModel.Draw(shaderProgram);
         model = glm::mat4(1.0f);
 
-
         model = glm::scale(model,glm::vec3(0.5f,0.5f,0.5f));
         model = glm::translate(model,glm::vec3(16.0f,-1.0f,15.5f));
         model = glm::rotate(model,glm::radians(60.0f), glm::vec3(0.0,1.0,0.0));
@@ -222,7 +219,6 @@ int main() {
         model = glm::mat4 (1.0f);
         model = glm::translate(model,bulbPos[0]);
         model = glm::scale(model,glm::vec3(0.07f,0.07f,0.07f));
-
 
         shaderProgram.setMat4("model",model);
         lightBulbModel.Draw(shaderProgram);
@@ -260,7 +256,6 @@ int main() {
         if(programState->ImguiEnable){
             DrawImgui(programState);
         }
-
 
         glfwPollEvents();
         glfwSwapBuffers(window);
@@ -327,7 +322,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
     lastX = xpos;
     lastY = ypos;
-    if(programState->ImguiEnable == false){
+    if(programState->EnableMouseMovement){
         programState->camera.ProcessMouseMovement(xoffset, yoffset);
     }
 }
@@ -343,10 +338,20 @@ void DrawImgui(ProgramState* programState){
     ImGui::NewFrame();
 
     {
-        ImGui::Begin("Test");
-        ImGui::Text("CGraphics");
+        ImGui::Begin("CGraphics");
         ImGui::ColorEdit3("Bulb color",(float*)&programState->lightColor);
         ImGui::ColorEdit3("Bulb color1",(float*)&programState->lightColor1);
+        ImGui::End();
+    }
+
+    {
+        ImGui::Begin("Camera");
+        auto &c = programState->camera;
+        ImGui::Text("Camera position: (%f, %f, %f)",c.Position.x,c.Position.y,c.Position.z);
+        ImGui::Text("Camera pitch: %f",c.Pitch);
+        ImGui::Text("Camera yaw: %f",c.Yaw);
+        ImGui::Text("Camera front: (%f, %f, %f)",c.Front.x,c.Front.y,c.Front.z);
+        ImGui::Checkbox("Enable camera movement on mouse",&programState->EnableMouseMovement);
         ImGui::End();
     }
 
