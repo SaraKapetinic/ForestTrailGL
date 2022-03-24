@@ -32,6 +32,7 @@ struct ProgramState{
     bool EnableMouseMovement = true;
     float linear = 0.09;
     float quadratic = 0.032;
+    bool enableAntialiasing = false;
     ProgramState()
     :camera(glm::vec3(0.0f,0.3f,5.5f)),lightColor(glm::vec3(1.0f,1.0f,1.0f))
     ,lightColor1(glm::vec3(1.0f,1.0f,1.0f)){}
@@ -94,12 +95,13 @@ void processInput(GLFWwindow* window);
 void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods);
 void DrawImgui(ProgramState* programState);
 
+
 int main() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
+    glfwWindowHint(GLFW_SAMPLES,10);
     GLFWwindow* window = glfwCreateWindow(800, 600, "CGraphics", NULL, NULL);
     if(window == NULL){
         std::cout << " Failed to create GLFW window" << std::endl;
@@ -121,7 +123,7 @@ int main() {
 
     stbi_set_flip_vertically_on_load(true);
     glEnable(GL_DEPTH_TEST);
-
+    //glEnable(GL_MULTISAMPLE); we can press f or g to enable/disable antialiasing
     glEnable(GL_CULL_FACE);
 
     programState = new ProgramState;
@@ -130,7 +132,6 @@ int main() {
 
     if(programState->ImguiEnable){
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-
     }
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -235,9 +236,6 @@ int main() {
 
         shaderProgram.setMat4("model",model);
         lightBulbModel.Draw(shaderProgram);
-
-
-
 
         model = glm::mat4(1.0f);
         model = glm::translate(model,glm::vec3(-terrain.getSize()/2.0f * 0.25,-0.50f,-terrain.getSize()/2.0f * 0.25) );
@@ -354,27 +352,29 @@ void DrawImgui(ProgramState* programState){
         ImGui::Text("Linear intensity");
         if(ImGui::RadioButton("0.7",&programState->linear)){
             programState->linear = 0.7;
-            ImGui::SameLine();
         }
         else if(ImGui::RadioButton("0.22",&programState->linear)){
             programState->linear = 0.22;
-            ImGui::SameLine();
         }
         else if(ImGui::RadioButton("0.09",&programState->linear)){
             programState->linear = 0.09;
         }
-        ImGui::NextColumn();
         ImGui::Text("Quadratic intensity");
         if(ImGui::RadioButton("1.8",&programState->quadratic)){
             programState->quadratic = 1.8;
-            ImGui::SameLine();
         }
         else if(ImGui::RadioButton("0.2",&programState->quadratic)){
             programState->quadratic = 0.2;
-            ImGui::SameLine();
         }
         else if(ImGui::RadioButton("0.032",&programState->quadratic)){
             programState->quadratic = 0.032;
+        }
+
+        ImGui::Checkbox("Enable Antialiasing",&programState->enableAntialiasing);
+        if(programState->enableAntialiasing){
+            glEnable(GL_MULTISAMPLE);
+        }else{
+            glDisable(GL_MULTISAMPLE);
         }
         ImGui::End();
     }
@@ -411,6 +411,14 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         }
+    }
+    if(key == GLFW_KEY_F && action == GLFW_PRESS){
+        glEnable(GL_MULTISAMPLE);
+        programState->enableAntialiasing = true;
+    }
+    if(key == GLFW_KEY_G && action == GLFW_PRESS){
+        glDisable(GL_MULTISAMPLE);
+        programState->enableAntialiasing = false;
     }
 
 }
