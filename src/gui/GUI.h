@@ -100,32 +100,39 @@ public:
             float display_height = (float)io.DisplaySize.y;
             float pos_x = display_width*0.6;
             float pos_y = display_height*0.7;
-            //ImGui::SetWindowPos(ImVec2(pos_x,pos_y));
+
             ImGui::SetNextWindowPos(ImVec2(pos_x,pos_y),ImGuiCond_FirstUseEver);
             ImGui::Begin("CGraphics");
             ImGui::ColorEdit3("Bulb color",(float*)&ps.lightColor);
             ImGui::ColorEdit3("Bulb color1",(float*)&ps.lightColor1);
 
             ImGui::Text("Linear intensity");
-            if(ImGui::RadioButton("0.7",&ps.linear)){
-                ps.linear = 0.7;
+
+            float& linear = ps.linear;
+            float& quadratic = ps.quadratic;
+            if(ImGui::RadioButton("0.7", linear == 0.7f)){
+                linear = 0.7f;
+
             }
-            else if(ImGui::RadioButton("0.22",&ps.linear)){
-                ps.linear = 0.22;
+
+
+            else if(ImGui::RadioButton("0.22", linear == 0.22f)) {
+                linear = 0.22f;
             }
-            else if(ImGui::RadioButton("0.09",&ps.linear)){
-                ps.linear = 0.09;
-            }
+
+
             ImGui::Text("Quadratic intensity");
-            if(ImGui::RadioButton("1.8",&ps.quadratic)){
-                ps.quadratic = 1.8;
+
+            if(ImGui::RadioButton("1.8",quadratic == 1.8f)){
+                quadratic = 1.8f;
             }
-            else if(ImGui::RadioButton("0.2",&ps.quadratic)){
-                ps.quadratic = 0.2;
+            else if(ImGui::RadioButton("0.2",quadratic == 0.2f)){
+                quadratic = 0.2f;
             }
-            else if(ImGui::RadioButton("0.032",&ps.quadratic)){
-                ps.quadratic = 0.032;
+            else if (ImGui::RadioButton("0.032",quadratic == 0.032f)){
+                quadratic = 0.032f;
             }
+
 
             ImGui::Checkbox("Enable Antialiasing",&ps.enableAntialiasing);
             if(ps.enableAntialiasing){
@@ -142,7 +149,7 @@ public:
             float display_height = (float)io.DisplaySize.y;
             float pos_x = display_width*0.6;
             float pos_y = display_height*0.3;
-            //ImGui::SetWindowPos(ImVec2(pos_x,pos_y));
+
             ImGui::SetNextWindowPos(ImVec2(pos_x,pos_y),ImGuiCond_FirstUseEver);
             ImGui::Begin("Camera");
             auto &c = ps.camera;

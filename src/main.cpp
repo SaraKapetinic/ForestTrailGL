@@ -28,7 +28,6 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods);
 
-
 int main() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -55,8 +54,8 @@ int main() {
     }
 
     stbi_set_flip_vertically_on_load(true);
-    glEnable(GL_DEPTH_TEST);
 
+    glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
     GUI imgui(ps, "../resources/programState.txt");
@@ -64,6 +63,11 @@ int main() {
     imgui.initImGui(window);
 
     Shader shaderProgram("../resources/shaders/model.vs", "../resources/shaders/model.fs");
+    Shader skyBoxShader("../resources/shaders/skybox.vs","../resources/shaders/skybox.fs");
+    Shader terrainShader("../resources/shaders/model.vs","../resources/shaders/terrain.fs");
+
+
+
     std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
     std::string streetLampPath = std::filesystem::path("../resources/models/StreetLamp/StreetLamp.obj");
     std::string lightBulbPath = std::filesystem::path("../resources/models/LightBulb/lightBulb.obj");
@@ -85,8 +89,7 @@ int main() {
 
     SkyBox skyBox(skyboxFaces);
 
-    Shader skyBoxShader("../resources/shaders/skybox.vs","../resources/shaders/skybox.fs");
-    Shader terrainShader("../resources/shaders/model.vs","../resources/shaders/terrain.fs");
+
     glViewport(0, 0, 800, 600);
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -286,5 +289,4 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
     }
 
 }
-
 
