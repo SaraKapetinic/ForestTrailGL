@@ -10,7 +10,7 @@
 #include "terrain/Terrain.h"
 #include "skybox/SkyBox.h"
 
-Camera camera(glm::vec3(0.0f,0.3f,5.5f));
+Camera camera(glm::vec3(0.0f,4.0f,35.5f));
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 float lastX = SCR_WIDTH / 2.0f;
