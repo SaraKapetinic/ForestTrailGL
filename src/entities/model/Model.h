@@ -4,14 +4,14 @@
 
 #ifndef CGRAPHICS_MODEL_H
 #define CGRAPHICS_MODEL_H
-#include "Shader.h"
+#include "../../Shader.h"
 #include <vector>
 #include "Mesh.h"
 #include <string>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include "stb_image.h"
+#include "../../../external/stb_image.h"
 
 class Model {
 public:

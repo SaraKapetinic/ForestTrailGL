@@ -6,10 +6,10 @@
 #define CGRAPHICS_TERRAINMODEL_H
 #include <glm/glm.hpp>
 #include <vector>
-#include <glad/glad.h>
+#include "glad/glad.h"
 #include <string>
-#include "../model/Shader.h"
-#include "../tools/DataStructs.h"
+#include "Shader.h"
+#include "DataStructs.h"
 
 
 
@@ -38,10 +38,10 @@ public:
         numOfIndices = Indices.size();
 
         std::vector<const char* > paths {
-                "../resources/TERRAINTEX.JPG",
-                "../resources/dirttex.jpg",
-                "../resources/blendmap.png",
-                "../resources/stonetext.png"
+                "../resources/terrain/grassText.jpg",
+                "../resources/terrain/dirtText.jpg",
+                "../resources/terrain/blendMap.png",
+                "../resources/terrain/stoneText.png"
 
         };
         loadTerrainTextures(paths);

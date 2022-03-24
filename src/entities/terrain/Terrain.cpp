@@ -4,11 +4,11 @@
 
 #include "Terrain.h"
 #include <iostream>
-#include "../model/stb_image.h"
+#include "stb_image.h"
 
 TerrainModel Terrain::generateTerrain() {
 
-    loadHeightMap("../resources/heightmap.png");
+    loadHeightMap("../resources/terrain/heightMap.png");
     if(heightMap == nullptr) {
         std::cout << "Error loading heightmap!" << std::endl;
         exit(EXIT_FAILURE);

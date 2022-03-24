@@ -5,14 +5,14 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "model/stb_image.h"
-#include "model/Shader.h"
-#include "model/Model.h"
+#include "stb_image.h"
+#include "Shader.h"
+#include "Model.h"
 #include <filesystem>
 #include <glm/gtc/matrix_transform.hpp>
-#include "model/Camera.h"
-#include "terrain/Terrain.h"
-#include "skybox/SkyBox.h"
+#include "Camera.h"
+#include "Terrain.h"
+#include "SkyBox.h"
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -146,7 +146,7 @@ int main() {
     ImGui_ImplGlfw_InitForOpenGL(window,true);
     ImGui_ImplOpenGL3_Init("#version 330 core");
 
-    Shader shaderProgram("../resources/shaders/model_load.vs", "../resources/shaders/model_load.fs");
+    Shader shaderProgram("../resources/shaders/model.vs", "../resources/shaders/model.fs");
     std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
     std::string streetLampPath = std::filesystem::path("../resources/models/StreetLamp/StreetLamp.obj");
     std::string lightBulbPath = std::filesystem::path("../resources/models/LightBulb/lightBulb.obj");
@@ -169,7 +169,7 @@ int main() {
     SkyBox skyBox(skyboxFaces);
 
     Shader skyBoxShader("../resources/shaders/skybox.vs","../resources/shaders/skybox.fs");
-    Shader terrainShader("../resources/shaders/model_load.vs","../resources/shaders/terrain.fs");
+    Shader terrainShader("../resources/shaders/model.vs","../resources/shaders/terrain.fs");
     glViewport(0, 0, 800, 600);
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);

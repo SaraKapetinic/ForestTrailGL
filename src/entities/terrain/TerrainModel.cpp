@@ -3,7 +3,7 @@
 //
 
 #include "TerrainModel.h"
-#include "../model/stb_image.h"
+#include "../../../external/stb_image.h"
 
 void TerrainModel::Draw(Shader& shader) {
 
