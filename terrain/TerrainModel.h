@@ -37,17 +37,24 @@ public:
 
         numOfIndices = Indices.size();
 
-        loadTerrainTexture("../resources/TERRAINTEX.JPG");
+        std::vector<const char* > paths {
+                "../resources/TERRAINTEX.JPG",
+                "../resources/dirttex.jpg",
+                "../resources/blendmap.png",
+                "../resources/stonetext.png"
+
+        };
+        loadTerrainTextures(paths);
     }
 
     void Draw(Shader& shader);
 
 private:
     unsigned VAO, VBO, EBO;
-    Texture terrainTex;
+    Texture terrainTex[4];
     int numOfIndices;
 
-    void loadTerrainTexture(const char *path);
+    void loadTerrainTextures(std::vector<const char *> &paths);
 };
 
 
