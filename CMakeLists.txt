@@ -15,6 +15,6 @@ add_subdirectory(external/imgui/)
 include_directories(external src src/entities/model src/entities/terrain src/entities/skybox src/tools)
 
 
-add_executable(CGraphics main.cpp src/entities/model/Mesh.cpp src/entities/model/Mesh.h src/Shader.cpp src/Shader.h src/entities/model/Model.cpp src/entities/model/Model.h src/Camera.h src/entities/terrain/Terrain.cpp src/entities/terrain/Terrain.h src/entities/terrain/TerrainModel.cpp src/entities/terrain/TerrainModel.h src/tools/DataStructs.h src/entities/skybox/SkyBox.cpp src/entities/skybox/SkyBox.h)
+add_executable(CGraphics src/main.cpp src/entities/model/Mesh.cpp src/entities/model/Mesh.h src/Shader.cpp src/Shader.h src/entities/model/Model.cpp src/entities/model/Model.h src/Camera.h src/entities/terrain/Terrain.cpp src/entities/terrain/Terrain.h src/entities/terrain/TerrainModel.cpp src/entities/terrain/TerrainModel.h src/tools/DataStructs.h src/entities/skybox/SkyBox.cpp src/entities/skybox/SkyBox.h)
 
 target_link_libraries(CGraphics glad glfw OpenGL::GL pthread X11 Xrandr Xi dl assimp STB_IMAGE imgui)
