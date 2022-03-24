@@ -10,7 +10,7 @@
 #include "terrain/Terrain.h"
 #include "skybox/SkyBox.h"
 
-Camera camera(glm::vec3(0.0f,0.3f,5.5f));
+Camera camera(glm::vec3(0.0f,4.0f,35.5f));
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 float lastX = SCR_WIDTH / 2.0f;
@@ -80,6 +80,7 @@ int main() {
     SkyBox skyBox(skyboxFaces);
 
     Shader skyBoxShader("../resources/shaders/skybox.vs","../resources/shaders/skybox.fs");
+    Shader terrainShader("../resources/shaders/model_load.vs","../resources/shaders/terrain.fs");
     glViewport(0, 0, 800, 600);
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -163,9 +164,24 @@ int main() {
         model = glm::mat4(1.0f);
         model = glm::translate(model,glm::vec3(-terrain.getSize()/2.0f * 0.25,-0.50f,-terrain.getSize()/2.0f * 0.25) );
         model = glm::scale(model, glm::vec3(0.25f,0.25f,0.25f));
+        terrainShader.use();
+        terrainShader.setMat4("view", view);
+        terrainShader.setMat4("projection", projection);
+        terrainShader.setMat4("model", model);
 
-        shaderProgram.setMat4("model", model);
-        terrainModel.Draw(shaderProgram);
+        terrainShader.setVec3("viewPos",camera.Position);
+        terrainShader.setVec3("pointLights[0].position", bulbPos[0]);
+        terrainShader.setVec3("pointLights[0].color", lightColor);
+        terrainShader.setFloat("pointLights[0].constant", 1.0);
+        terrainShader.setFloat("pointLights[0].linear",0.22);
+        terrainShader.setFloat("pointLights[0].quadratic", 0.20);
+        terrainShader.setVec3("pointLights[1].position", bulbPos[1]);
+        terrainShader.setVec3("pointLights[1].color", lightColor);
+        terrainShader.setFloat("pointLights[1].constant", 1.0);
+        terrainShader.setFloat("pointLights[1].linear",0.22);
+        terrainShader.setFloat("pointLights[1].quadratic", 0.20);
+
+        terrainModel.Draw(terrainShader);
 
         glDepthFunc(GL_LEQUAL);
         skyBoxShader.use();
