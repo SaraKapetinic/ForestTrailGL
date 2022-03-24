@@ -56,7 +56,9 @@ void ProgramState::SaveToDisk(std::string path) {
     <<lightColor.b<<'\n'
     <<lightColor1.r<<'\n'
     <<lightColor1.g<<'\n'
-    <<lightColor1.b;
+    <<lightColor1.b<<'\n'
+    <<linear<<'\n'
+    <<quadratic;
 }
 
 void ProgramState::LoadFromDisk(std::string path) {
@@ -77,7 +79,9 @@ void ProgramState::LoadFromDisk(std::string path) {
         >>lightColor.b
         >>lightColor1.r
         >>lightColor1.g
-        >>lightColor1.b;
+        >>lightColor1.b
+        >>linear
+        >>quadratic;
     }
 }
 
