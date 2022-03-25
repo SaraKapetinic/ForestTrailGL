@@ -27,6 +27,7 @@ void mouse_callback(GLFWwindow *window, double xposIn, double yposIn);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods);
+inline void initializeShader(Shader& shader, ProgramState& programState, glm::mat4 &view, glm::mat4& projection);
 
 int main() {
     glfwInit();
@@ -62,7 +63,7 @@ int main() {
 
     imgui.initImGui(window);
 
-    Shader shaderProgram("../resources/shaders/model.vs", "../resources/shaders/model.fs");
+    Shader mainShader("../resources/shaders/model.vs", "../resources/shaders/model.fs");
     Shader skyBoxShader("../resources/shaders/skybox.vs","../resources/shaders/skybox.fs");
     Shader terrainShader("../resources/shaders/model.vs","../resources/shaders/terrain.fs");
 
@@ -101,86 +102,62 @@ int main() {
         glClearColor(0.529f, 0.807f, 0.921f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shaderProgram.use();
+        mainShader.use();
         ProgramState &programState = imgui.getPs();
         glm::mat4 projection = glm::perspective(glm::radians(programState.camera.Zoom),(float)SCR_WIDTH/(float)SCR_HEIGHT,0.1f,100.0f);
         glm::mat4 view = programState.camera.GetViewMatrix();
 
-        shaderProgram.setMat4("projection", projection);
-        shaderProgram.setMat4("view", view);
-        shaderProgram.setVec3("viewPos",programState.camera.Position);
-        shaderProgram.setVec3("pointLights[0].position", bulbPos[0]);
-        shaderProgram.setVec3("pointLights[0].color", programState.lightColor);
-        shaderProgram.setFloat("pointLights[0].constant", 1.0);
-        shaderProgram.setFloat("pointLights[0].linear",programState.linear);
-        shaderProgram.setFloat("pointLights[0].quadratic", programState.quadratic);
-        shaderProgram.setVec3("pointLights[1].position", bulbPos[1]);
-        shaderProgram.setVec3("pointLights[1].color", programState.lightColor1);
-        shaderProgram.setFloat("pointLights[1].constant", 1.0);
-        shaderProgram.setFloat("pointLights[1].linear",programState.linear);
-        shaderProgram.setFloat("pointLights[1].quadratic", programState.quadratic);
-
+        initializeShader(mainShader, ps, view, projection);
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(1.6f,1.5f,0.0f));
         model = glm::scale(model, glm::vec3(0.06f, 0.06f, 0.05f));
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0, 0.0, 0.0));
         model = glm::rotate(model, glm::radians(60.0f), glm::vec3(0.0, 0.0, 1.0));
 
-        shaderProgram.setMat4("model", model);
-        bridgeModel.Draw(shaderProgram);
+        mainShader.setMat4("model", model);
+        bridgeModel.Draw(mainShader);
         model = glm::mat4(1.0f);
 
         model = glm::scale(model,glm::vec3(0.5f,0.5f,0.5f));
         model = glm::translate(model,glm::vec3(16.0f,-1.0f,15.5f));
         model = glm::rotate(model,glm::radians(60.0f), glm::vec3(0.0,1.0,0.0));
 
-        shaderProgram.setMat4("model", model);
-        streetLampModel.Draw(shaderProgram);
+        mainShader.setMat4("model", model);
+        streetLampModel.Draw(mainShader);
 
         model = glm::mat4(1.0f);
         model = glm::scale(model,glm::vec3(0.5f,0.5f,0.5f));
         model = glm::translate(model, glm::vec3(-10.0f,-1.0f,-13.5f));
         model = glm::rotate(model,glm::radians(60.0f), glm::vec3(0.0,1.0,0.0));
-        shaderProgram.setMat4("model", model);
-        streetLampModel.Draw(shaderProgram);
+        mainShader.setMat4("model", model);
+        streetLampModel.Draw(mainShader);
 
         model = glm::mat4 (1.0f);
         model = glm::translate(model,bulbPos[0]);
         model = glm::scale(model,glm::vec3(0.07f,0.07f,0.07f));
 
-        shaderProgram.setMat4("model",model);
-        lightBulbModel.Draw(shaderProgram);
+        mainShader.setMat4("model", model);
+        lightBulbModel.Draw(mainShader);
 
         model = glm::mat4 (1.0f);
         model = glm::translate(model,bulbPos[1]);
         model = glm::scale(model,glm::vec3(0.07f,0.07f,0.07f));
 
 
-        shaderProgram.setMat4("model",model);
-        lightBulbModel.Draw(shaderProgram);
+        mainShader.setMat4("model", model);
+        lightBulbModel.Draw(mainShader);
 
-        shaderProgram.setMat4("model",model);
-        lightBulbModel.Draw(shaderProgram);
+        mainShader.setMat4("model", model);
+        lightBulbModel.Draw(mainShader);
 
         model = glm::mat4(1.0f);
         model = glm::translate(model,glm::vec3(-terrain.getSize()/2.0f * 0.25,-0.50f,-terrain.getSize()/2.0f * 0.25) );
         model = glm::scale(model, glm::vec3(0.25f,0.25f,0.25f));
         terrainShader.use();
-        terrainShader.setMat4("view", view);
-        terrainShader.setMat4("projection", projection);
+
         terrainShader.setMat4("model", model);
 
-        terrainShader.setVec3("viewPos",programState.camera.Position);
-        terrainShader.setVec3("pointLights[0].position", bulbPos[0]);
-        terrainShader.setVec3("pointLights[0].color", programState.lightColor);
-        terrainShader.setFloat("pointLights[0].constant", 1.0);
-        terrainShader.setFloat("pointLights[0].linear",programState.linear);
-        terrainShader.setFloat("pointLights[0].quadratic", programState.quadratic);
-        terrainShader.setVec3("pointLights[1].position", bulbPos[1]);
-        terrainShader.setVec3("pointLights[1].color", programState.lightColor1);
-        terrainShader.setFloat("pointLights[1].constant", 1.0);
-        terrainShader.setFloat("pointLights[1].linear",programState.linear);
-        terrainShader.setFloat("pointLights[1].quadratic", programState.quadratic);
+        initializeShader(terrainShader, ps, view, projection);
 
         terrainModel.Draw(terrainShader);
 
@@ -288,5 +265,20 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
         ps.enableAntialiasing = false;
     }
 
+}
+inline void initializeShader(Shader& shader, ProgramState& programState, glm::mat4 &view, glm::mat4& projection){
+    shader.setMat4("projection", projection);
+    shader.setMat4("view", view);
+    shader.setVec3("viewPos",programState.camera.Position);
+    shader.setVec3("pointLights[0].position", bulbPos[0]);
+    shader.setVec3("pointLights[0].color", programState.lightColor);
+    shader.setFloat("pointLights[0].constant", 1.0);
+    shader.setFloat("pointLights[0].linear",programState.linear);
+    shader.setFloat("pointLights[0].quadratic", programState.quadratic);
+    shader.setVec3("pointLights[1].position", bulbPos[1]);
+    shader.setVec3("pointLights[1].color", programState.lightColor1);
+    shader.setFloat("pointLights[1].constant", 1.0);
+    shader.setFloat("pointLights[1].linear",programState.linear);
+    shader.setFloat("pointLights[1].quadratic", programState.quadratic);
 }
 
