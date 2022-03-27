@@ -6,13 +6,14 @@
 #include "glad/glad.h"
 #include "../../../external/stb_image.h"
 #include <iostream>
-SkyBox::SkyBox(std::vector<std::string> &faces) {
-    loadCubemapTextures(faces);
+SkyBox::SkyBox(std::vector<std::string> &faces, std::vector<std::string> &nightFaces) {
+    loadCubemapTextures(faces, dayTextureID);
+    loadCubemapTextures(nightFaces, nightTextureID);
 
 }
 SkyBox::SkyBox() {}
 
-void SkyBox::loadCubemapTextures(std::vector<std::string> &faces) {
+void SkyBox::loadCubemapTextures(std::vector<std::string> &faces, unsigned &textureID) {
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
@@ -39,6 +40,9 @@ void SkyBox::loadCubemapTextures(std::vector<std::string> &faces) {
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+
+
 }
 
 void SkyBox::Draw() {
@@ -93,7 +97,10 @@ void SkyBox::Draw() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, dayTextureID);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, nightTextureID);
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
 

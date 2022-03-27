@@ -10,15 +10,16 @@
 
 class SkyBox {
 public:
-    SkyBox(std::vector<std::string> &faces);
+    SkyBox(std::vector<std::string> &faces, std::vector<std::string> &nightFaces);
     SkyBox();
 
     void Draw();
 
 private:
     unsigned int VAO, VBO;
-    unsigned textureID;
-    void loadCubemapTextures(std::vector<std::string> &faces);
+    unsigned dayTextureID;
+    unsigned nightTextureID;
+    void loadCubemapTextures(std::vector<std::string> &faces, unsigned &textureID);
 };
 
 

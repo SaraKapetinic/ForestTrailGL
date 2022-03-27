@@ -89,20 +89,20 @@ int main() {
             "../resources/skybox/daylight/back.bmp",
             "../resources/skybox/daylight/front.bmp"
     };
-
-
-    SkyBox skyBox(skyboxFaces);
-
-    std::vector<std::string> nightFaces = {
-            "../resources/skybox/nightsky/xneg.png",
-            "../resources/skybox/nightsky/xpos.png",
-            "../resources/skybox/nightsky/zpos.png",
-            "../resources/skybox/nightsky/zneg.png",
-            "../resources/skybox/nightsky/yneg.png",
-            "../resources/skybox/nightsky/ypos.png"
+    std::vector<std::string> nightSkyboxFaces = {
+            "../resources/skybox/nightsky/xneg.jpg",
+            "../resources/skybox/nightsky/xpos.jpg",
+            "../resources/skybox/nightsky/zpos.jpg",
+            "../resources/skybox/nightsky/zneg.jpg",
+            "../resources/skybox/nightsky/yneg.jpg",
+            "../resources/skybox/nightsky/ypos.jpg"
 
     };
-    SkyBox nightSkybox(nightFaces);
+
+    SkyBox skyBox(skyboxFaces, nightSkyboxFaces);
+
+
+    //SkyBox nightSkybox(nightFaces);
 
     glViewport(0, 0, 800, 600);
 
@@ -176,8 +176,10 @@ int main() {
 
         glDepthFunc(GL_LEQUAL);
         skyBoxShader.use();
-        skyBoxShader.setInt("skybox", 0);
+        skyBoxShader.setInt("daySkybox", 0);
+        skyBoxShader.setInt("nightSkybox", 1);
         view = glm::mat4(glm::mat3(programState.camera.GetViewMatrix()));
+        view = glm::rotate(view, glm::radians((float)glfwGetTime()), glm::vec3(0.0f,1.0f,0.0f));
         skyBoxShader.setMat4("view", view);
         skyBoxShader.setMat4("projection", projection);
         skyBox.Draw();
