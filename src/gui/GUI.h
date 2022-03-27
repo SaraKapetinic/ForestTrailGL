@@ -106,23 +106,21 @@ public:
             ImGui::ColorEdit3("Bulb color",(float*)&ps.lightColor);
             ImGui::ColorEdit3("Bulb color1",(float*)&ps.lightColor1);
 
-            ImGui::Text("Linear intensity");
-
             float& linear = ps.linear;
             float& quadratic = ps.quadratic;
+
+            ImGui::Text("Linear intensity");
             if(ImGui::RadioButton("0.7", linear == 0.7f)){
                 linear = 0.7f;
-
             }
-
-
             else if(ImGui::RadioButton("0.22", linear == 0.22f)) {
                 linear = 0.22f;
             }
-
+            else if(ImGui::RadioButton("0.09",linear == 0.09f)){
+                linear = 0.09f;
+            }
 
             ImGui::Text("Quadratic intensity");
-
             if(ImGui::RadioButton("1.8",quadratic == 1.8f)){
                 quadratic = 1.8f;
             }
@@ -132,7 +130,6 @@ public:
             else if (ImGui::RadioButton("0.032",quadratic == 0.032f)){
                 quadratic = 0.032f;
             }
-
 
             ImGui::Checkbox("Enable Antialiasing",&ps.enableAntialiasing);
             if(ps.enableAntialiasing){
