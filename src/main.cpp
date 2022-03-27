@@ -17,11 +17,13 @@ float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 ProgramState ps;
+SkyBox nightSkybox;
 
 glm::vec3 bulbPos[] = {
         glm::vec3(-5.0f, 4.2f, -6.75f),
         glm::vec3(8.03f, 4.2f, 7.75f)
 };
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow *window, double xposIn, double yposIn);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -88,8 +90,19 @@ int main() {
             "../resources/skybox/daylight/front.bmp"
     };
 
+
     SkyBox skyBox(skyboxFaces);
 
+    std::vector<std::string> nightFaces = {
+            "../resources/skybox/nightsky/xneg.png",
+            "../resources/skybox/nightsky/xpos.png",
+            "../resources/skybox/nightsky/zpos.png",
+            "../resources/skybox/nightsky/zneg.png",
+            "../resources/skybox/nightsky/yneg.png",
+            "../resources/skybox/nightsky/ypos.png"
+
+    };
+    SkyBox nightSkybox(nightFaces);
 
     glViewport(0, 0, 800, 600);
 
@@ -169,6 +182,8 @@ int main() {
         skyBoxShader.setMat4("projection", projection);
         skyBox.Draw();
         glDepthFunc(GL_LESS);
+
+
 
         if(programState.ImguiEnable){
             imgui.DrawImgui();
@@ -263,6 +278,10 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
     if(key == GLFW_KEY_G && action == GLFW_PRESS){
         glDisable(GL_MULTISAMPLE);
         ps.enableAntialiasing = false;
+    }
+    if(key == GLFW_KEY_N && action == GLFW_PRESS){
+        nightSkybox.Draw();
+
     }
 
 }

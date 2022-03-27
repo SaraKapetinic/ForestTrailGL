@@ -11,6 +11,7 @@
 class SkyBox {
 public:
     SkyBox(std::vector<std::string> &faces);
+    SkyBox();
 
     void Draw();
 

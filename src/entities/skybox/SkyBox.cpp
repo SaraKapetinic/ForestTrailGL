@@ -10,6 +10,7 @@ SkyBox::SkyBox(std::vector<std::string> &faces) {
     loadCubemapTextures(faces);
 
 }
+SkyBox::SkyBox() {}
 
 void SkyBox::loadCubemapTextures(std::vector<std::string> &faces) {
     glGenTextures(1, &textureID);
