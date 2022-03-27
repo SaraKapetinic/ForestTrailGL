@@ -3,8 +3,8 @@
 //
 
 #include "SkyBox.h"
-#include <glad/glad.h>
-#include "../model/stb_image.h"
+#include "glad/glad.h"
+#include "../../../external/stb_image.h"
 #include <iostream>
 SkyBox::SkyBox(std::vector<std::string> &faces) {
     loadCubemapTextures(faces);

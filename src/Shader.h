@@ -5,7 +5,7 @@
 #ifndef CGRAPHICS_SHADER_H
 #define CGRAPHICS_SHADER_H
 #include <glm/glm.hpp>
-#include <glad/glad.h>
+#include "glad/glad.h"
 #include <fstream>
 #include <string>
 #include <sstream>

@@ -9,7 +9,7 @@
 #include "Shader.h"
 #include <string>
 #include <vector>
-#include "../tools/DataStructs.h"
+#include "DataStructs.h"
 
 class Mesh {
     public:

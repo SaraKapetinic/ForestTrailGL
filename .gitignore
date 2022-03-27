@@ -2,5 +2,5 @@
 cmake-*-*
 .vscode
 .DS_Store
-programState.txt
 
+resources/programState.txt
