@@ -10,6 +10,7 @@
 #include "Terrain.h"
 #include "SkyBox.h"
 #include "GUI.h"
+#include <cmath>
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -17,7 +18,6 @@ float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 ProgramState ps;
-SkyBox nightSkybox;
 
 glm::vec3 bulbPos[] = {
         glm::vec3(-5.0f, 4.2f, -6.75f),
@@ -66,10 +66,8 @@ int main() {
     imgui.initImGui(window);
 
     Shader mainShader("../resources/shaders/model.vs", "../resources/shaders/model.fs");
-    Shader skyBoxShader("../resources/shaders/skybox.vs","../resources/shaders/skybox.fs");
     Shader terrainShader("../resources/shaders/model.vs","../resources/shaders/terrain.fs");
-
-
+    Shader skyBoxShader("../resources/shaders/skybox.vs","../resources/shaders/skybox.fs");
 
     std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
     std::string streetLampPath = std::filesystem::path("../resources/models/StreetLamp/StreetLamp.obj");
@@ -101,7 +99,6 @@ int main() {
 
     SkyBox skyBox(skyboxFaces, nightSkyboxFaces);
 
-
     //SkyBox nightSkybox(nightFaces);
 
     glViewport(0, 0, 800, 600);
@@ -114,7 +111,7 @@ int main() {
 
         glClearColor(0.529f, 0.807f, 0.921f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+        double y = (sin(glfwGetTime())+1)/2.0;
         mainShader.use();
         ProgramState &programState = imgui.getPs();
         glm::mat4 projection = glm::perspective(glm::radians(programState.camera.Zoom),(float)SCR_WIDTH/(float)SCR_HEIGHT,0.1f,100.0f);
@@ -182,7 +179,9 @@ int main() {
         view = glm::rotate(view, glm::radians((float)glfwGetTime()), glm::vec3(0.0f,1.0f,0.0f));
         skyBoxShader.setMat4("view", view);
         skyBoxShader.setMat4("projection", projection);
+        skyBoxShader.setFloat("opacity", (float)y);
         skyBox.Draw();
+        std::cout<<glfwGetTime()<<" "<<y<<std::endl;
         glDepthFunc(GL_LESS);
 
 
@@ -234,6 +233,7 @@ void processInput(GLFWwindow* window){
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
+
 }
 
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
@@ -280,10 +280,6 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
     if(key == GLFW_KEY_G && action == GLFW_PRESS){
         glDisable(GL_MULTISAMPLE);
         ps.enableAntialiasing = false;
-    }
-    if(key == GLFW_KEY_N && action == GLFW_PRESS){
-        nightSkybox.Draw();
-
     }
 
 }

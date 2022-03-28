@@ -44,10 +44,6 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos){
     return (ambient+diffuse+specular);
 }
 
-
-
-
-
 void main()
 {
 

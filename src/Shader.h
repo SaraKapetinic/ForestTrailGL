@@ -13,6 +13,7 @@
 
 class Shader {
 public:
+
     unsigned id;
 
     unsigned int getId() const;
