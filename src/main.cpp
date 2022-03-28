@@ -18,6 +18,7 @@ float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 ProgramState ps;
+bool nightMode = false;
 
 glm::vec3 bulbPos[] = {
         glm::vec3(-5.0f, 4.2f, -6.75f),
@@ -104,6 +105,7 @@ int main() {
     glViewport(0, 0, 800, 600);
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    double y = 0.0;
 
     while(!glfwWindowShouldClose(window)){
         glGetError();
@@ -111,7 +113,14 @@ int main() {
 
         glClearColor(0.529f, 0.807f, 0.921f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        double y = (sin(glfwGetTime())+1)/2.0;
+
+        if(y > 1.0) {
+            y = 1.0;
+        }
+        else if(y<1.0 && nightMode){
+            y = glfwGetTime()/30.0;
+        }
+
         mainShader.use();
         ProgramState &programState = imgui.getPs();
         glm::mat4 projection = glm::perspective(glm::radians(programState.camera.Zoom),(float)SCR_WIDTH/(float)SCR_HEIGHT,0.1f,100.0f);
@@ -179,9 +188,13 @@ int main() {
         view = glm::rotate(view, glm::radians((float)glfwGetTime()), glm::vec3(0.0f,1.0f,0.0f));
         skyBoxShader.setMat4("view", view);
         skyBoxShader.setMat4("projection", projection);
-        skyBoxShader.setFloat("opacity", (float)y);
+        if(nightMode){
+            skyBoxShader.setFloat("opacity", (float)y);
+        }
+        else {
+            skyBoxShader.setFloat("opacity", 0.0);
+        }
         skyBox.Draw();
-        std::cout<<glfwGetTime()<<" "<<y<<std::endl;
         glDepthFunc(GL_LESS);
 
 
@@ -280,6 +293,13 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
     if(key == GLFW_KEY_G && action == GLFW_PRESS){
         glDisable(GL_MULTISAMPLE);
         ps.enableAntialiasing = false;
+    }
+
+    if(key == GLFW_KEY_N && action == GLFW_PRESS){
+        nightMode = true;
+    }
+    if(key == GLFW_KEY_M && action == GLFW_PRESS){
+        nightMode = false;
     }
 
 }
