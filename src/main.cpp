@@ -18,8 +18,13 @@ float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 ProgramState ps;
-bool nightMode = false;
-
+int nightMode = 0;
+double y = 0.0;
+double g = 1.0;
+bool day = true;
+bool night = false;
+float i = 0.0;
+float j = 1.0;
 glm::vec3 bulbPos[] = {
         glm::vec3(-5.0f, 4.2f, -6.75f),
         glm::vec3(8.03f, 4.2f, 7.75f)
@@ -105,7 +110,6 @@ int main() {
     glViewport(0, 0, 800, 600);
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    double y = 0.0;
 
     while(!glfwWindowShouldClose(window)){
         glGetError();
@@ -114,12 +118,28 @@ int main() {
         glClearColor(0.529f, 0.807f, 0.921f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        if(y > 1.0) {
+        if(nightMode == 1){
+            j=1.0;
+            i+=0.05;
+        }
+        if(y > 1.0 && nightMode == 1 ) {
             y = 1.0;
         }
-        else if(y<1.0 && nightMode){
-            y = glfwGetTime()/30.0;
+        else if(y < 1.0 && nightMode == 1){
+            y = i;
         }
+
+        if(nightMode == 2){
+            i= 0.0;
+            j-=0.05;
+        }
+        if(g > 0.0 && nightMode == 2){
+            g = j;
+        }
+        else if(g < 0.0){
+            g = 0.0;
+        }
+
 
         mainShader.use();
         ProgramState &programState = imgui.getPs();
@@ -188,12 +208,16 @@ int main() {
         view = glm::rotate(view, glm::radians((float)glfwGetTime()), glm::vec3(0.0f,1.0f,0.0f));
         skyBoxShader.setMat4("view", view);
         skyBoxShader.setMat4("projection", projection);
-        if(nightMode){
+        if(nightMode == 1){
             skyBoxShader.setFloat("opacity", (float)y);
         }
-        else {
+        else if(nightMode == 0) {
             skyBoxShader.setFloat("opacity", 0.0);
         }
+        else if(nightMode == 2){
+            skyBoxShader.setFloat("opacity", (float)g);
+        }
+
         skyBox.Draw();
         glDepthFunc(GL_LESS);
 
@@ -296,10 +320,10 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
     }
 
     if(key == GLFW_KEY_N && action == GLFW_PRESS){
-        nightMode = true;
+        nightMode = 1;
     }
     if(key == GLFW_KEY_M && action == GLFW_PRESS){
-        nightMode = false;
+        nightMode = 2;
     }
 
 }
