@@ -120,7 +120,7 @@ int main() {
 
         if(nightMode == 1){
             j=1.0;
-            i+=0.05;
+            i+=0.01;
         }
         if(y > 1.0 && nightMode == 1 ) {
             y = 1.0;
@@ -131,7 +131,7 @@ int main() {
 
         if(nightMode == 2){
             i= 0.0;
-            j-=0.05;
+            j-=0.01;
         }
         if(g > 0.0 && nightMode == 2){
             g = j;
@@ -320,9 +320,11 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
     }
 
     if(key == GLFW_KEY_N && action == GLFW_PRESS){
+        y = 0.0;
         nightMode = 1;
     }
     if(key == GLFW_KEY_M && action == GLFW_PRESS){
+        g = 1.0;
         nightMode = 2;
     }
 
