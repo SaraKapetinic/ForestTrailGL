@@ -10,6 +10,7 @@
 #include "Terrain.h"
 #include "SkyBox.h"
 #include "GUI.h"
+#include <cmath>
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -17,17 +18,23 @@ float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 ProgramState ps;
-
+int nightMode = 0;
+double y = 0.0;
+double g = 1.0;
+float i = 0.0;
+float j = 1.0;
 glm::vec3 bulbPos[] = {
         glm::vec3(-5.0f, 4.2f, -6.75f),
         glm::vec3(8.03f, 4.2f, 7.75f)
 };
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow *window, double xposIn, double yposIn);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods);
 inline void initializeShader(Shader& shader, ProgramState& programState, glm::mat4 &view, glm::mat4& projection);
+void setDayNightCycle();
 
 int main() {
     glfwInit();
@@ -64,10 +71,8 @@ int main() {
     imgui.initImGui(window);
 
     Shader mainShader("../resources/shaders/model.vs", "../resources/shaders/model.fs");
-    Shader skyBoxShader("../resources/shaders/skybox.vs","../resources/shaders/skybox.fs");
     Shader terrainShader("../resources/shaders/model.vs","../resources/shaders/terrain.fs");
-
-
+    Shader skyBoxShader("../resources/shaders/skybox.vs","../resources/shaders/skybox.fs");
 
     std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
     std::string streetLampPath = std::filesystem::path("../resources/models/StreetLamp/StreetLamp.obj");
@@ -87,9 +92,19 @@ int main() {
             "../resources/skybox/daylight/back.bmp",
             "../resources/skybox/daylight/front.bmp"
     };
+    std::vector<std::string> nightSkyboxFaces = {
+            "../resources/skybox/nightsky/xneg.jpg",
+            "../resources/skybox/nightsky/xpos.jpg",
+            "../resources/skybox/nightsky/zpos.jpg",
+            "../resources/skybox/nightsky/zneg.jpg",
+            "../resources/skybox/nightsky/yneg.jpg",
+            "../resources/skybox/nightsky/ypos.jpg"
 
-    SkyBox skyBox(skyboxFaces);
+    };
 
+    SkyBox skyBox(skyboxFaces, nightSkyboxFaces);
+
+    //SkyBox nightSkybox(nightFaces);
 
     glViewport(0, 0, 800, 600);
 
@@ -101,6 +116,8 @@ int main() {
 
         glClearColor(0.529f, 0.807f, 0.921f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        setDayNightCycle();
 
         mainShader.use();
         ProgramState &programState = imgui.getPs();
@@ -163,12 +180,26 @@ int main() {
 
         glDepthFunc(GL_LEQUAL);
         skyBoxShader.use();
-        skyBoxShader.setInt("skybox", 0);
+        skyBoxShader.setInt("daySkybox", 0);
+        skyBoxShader.setInt("nightSkybox", 1);
         view = glm::mat4(glm::mat3(programState.camera.GetViewMatrix()));
+        view = glm::rotate(view, glm::radians((float)glfwGetTime()), glm::vec3(0.0f,1.0f,0.0f));
         skyBoxShader.setMat4("view", view);
         skyBoxShader.setMat4("projection", projection);
+        if(nightMode == 1){
+            skyBoxShader.setFloat("opacity", (float)y);
+        }
+        else if(nightMode == 0) {
+            skyBoxShader.setFloat("opacity", 0.0);
+        }
+        else if(nightMode == 2){
+            skyBoxShader.setFloat("opacity", (float)g);
+        }
+
         skyBox.Draw();
         glDepthFunc(GL_LESS);
+
+
 
         if(programState.ImguiEnable){
             imgui.DrawImgui();
@@ -217,6 +248,7 @@ void processInput(GLFWwindow* window){
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
+
 }
 
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
@@ -265,6 +297,15 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
         ps.enableAntialiasing = false;
     }
 
+    if(key == GLFW_KEY_N && action == GLFW_PRESS){
+        y = 0.0;
+        nightMode = 1;
+    }
+    if(key == GLFW_KEY_M && action == GLFW_PRESS){
+        g = 1.0;
+        nightMode = 2;
+    }
+
 }
 inline void initializeShader(Shader& shader, ProgramState& programState, glm::mat4 &view, glm::mat4& projection){
     shader.setMat4("projection", projection);
@@ -281,4 +322,27 @@ inline void initializeShader(Shader& shader, ProgramState& programState, glm::ma
     shader.setFloat("pointLights[1].linear",programState.linear);
     shader.setFloat("pointLights[1].quadratic", programState.quadratic);
 }
+void setDayNightCycle(){
 
+    if(nightMode == 1){
+        j=1.0;
+        i+=0.01;
+    }
+    if(y > 1.0 && nightMode == 1 ){
+        y = 1.0;
+    }
+    else if(y < 1.0 && nightMode == 1){
+        y = i;
+    }
+
+    if(nightMode == 2){
+        i= 0.0;
+        j-=0.01;
+    }
+    if(g > 0.0 && nightMode == 2){
+        g = j;
+    }
+    else if(g < 0.0){
+        g = 0.0;
+    }
+}

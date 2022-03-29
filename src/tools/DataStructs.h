@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include "Camera.h"
 
+
 struct Vertex {
     glm::vec3 Position;
     glm::vec3 Normal;
@@ -31,11 +32,14 @@ struct ProgramState{
     float linear = 0.7;
     float quadratic = 0.032;
     bool enableAntialiasing = false;
+
     ProgramState()
             :camera(glm::vec3(0.0f,4.0f,35.5f)),lightColor(glm::vec3(1.0f,1.0f,1.0f))
             ,lightColor1(glm::vec3(1.0f,1.0f,1.0f)){}
 
 };
+
+
 
 
 #endif //CGRAPHICS_DATASTRUCTS_H
