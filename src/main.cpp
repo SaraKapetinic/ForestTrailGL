@@ -21,8 +21,6 @@ ProgramState ps;
 int nightMode = 0;
 double y = 0.0;
 double g = 1.0;
-bool day = true;
-bool night = false;
 float i = 0.0;
 float j = 1.0;
 glm::vec3 bulbPos[] = {
@@ -36,6 +34,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods);
 inline void initializeShader(Shader& shader, ProgramState& programState, glm::mat4 &view, glm::mat4& projection);
+void setDayNightCycle();
 
 int main() {
     glfwInit();
@@ -118,28 +117,7 @@ int main() {
         glClearColor(0.529f, 0.807f, 0.921f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        if(nightMode == 1){
-            j=1.0;
-            i+=0.01;
-        }
-        if(y > 1.0 && nightMode == 1 ) {
-            y = 1.0;
-        }
-        else if(y < 1.0 && nightMode == 1){
-            y = i;
-        }
-
-        if(nightMode == 2){
-            i= 0.0;
-            j-=0.01;
-        }
-        if(g > 0.0 && nightMode == 2){
-            g = j;
-        }
-        else if(g < 0.0){
-            g = 0.0;
-        }
-
+        setDayNightCycle();
 
         mainShader.use();
         ProgramState &programState = imgui.getPs();
@@ -344,4 +322,27 @@ inline void initializeShader(Shader& shader, ProgramState& programState, glm::ma
     shader.setFloat("pointLights[1].linear",programState.linear);
     shader.setFloat("pointLights[1].quadratic", programState.quadratic);
 }
+void setDayNightCycle(){
 
+    if(nightMode == 1){
+        j=1.0;
+        i+=0.01;
+    }
+    if(y > 1.0 && nightMode == 1 ){
+        y = 1.0;
+    }
+    else if(y < 1.0 && nightMode == 1){
+        y = i;
+    }
+
+    if(nightMode == 2){
+        i= 0.0;
+        j-=0.01;
+    }
+    if(g > 0.0 && nightMode == 2){
+        g = j;
+    }
+    else if(g < 0.0){
+        g = 0.0;
+    }
+}
