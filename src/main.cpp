@@ -10,6 +10,7 @@
 #include "Terrain.h"
 #include "SkyBox.h"
 #include "GUI.h"
+#include "Water.h"
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -66,7 +67,7 @@ int main() {
     Shader mainShader("../resources/shaders/model.vs", "../resources/shaders/model.fs");
     Shader skyBoxShader("../resources/shaders/skybox.vs","../resources/shaders/skybox.fs");
     Shader terrainShader("../resources/shaders/model.vs","../resources/shaders/terrain.fs");
-
+    Shader waterShader("../resources/shaders/model.vs", "../resources/shaders/water.fs");
 
 
     std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
@@ -79,6 +80,10 @@ int main() {
 
     Terrain terrain(0, 0, 25);
     TerrainModel terrainModel = terrain.generateTerrain();
+
+    Water water(0,0 , 25);
+    WaterModel waterModel = water.generateWater();
+
     std::vector<std::string> skyboxFaces = {
             "../resources/skybox/daylight/right.bmp",
             "../resources/skybox/daylight/left.bmp",
@@ -150,6 +155,8 @@ int main() {
         mainShader.setMat4("model", model);
         lightBulbModel.Draw(mainShader);
 
+
+
         model = glm::mat4(1.0f);
         model = glm::translate(model,glm::vec3(-terrain.getSize()/2.0f * 0.25,-0.50f,-terrain.getSize()/2.0f * 0.25) );
         model = glm::scale(model, glm::vec3(0.25f,0.25f,0.25f));
@@ -160,6 +167,16 @@ int main() {
         initializeShader(terrainShader, ps, view, projection);
 
         terrainModel.Draw(terrainShader);
+
+        waterShader.use();
+        model = glm::mat4(1.0f);
+
+
+        initializeShader(waterShader, ps, view, projection);
+        model = glm::translate(model, glm::vec3(-water.getSize()/2.0f * 0.25f, -1.0f, -water.getSize()/2.0f * 0.25f));
+        model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
+        waterShader.setMat4("model", model);
+        waterModel.Draw(waterShader);
 
         glDepthFunc(GL_LEQUAL);
         skyBoxShader.use();
