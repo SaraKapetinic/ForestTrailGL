@@ -24,7 +24,6 @@ struct Texture {
 
 struct ProgramState{
     bool ImguiEnable= false;
-    void LoadFromDisk(std::string path);
     Camera camera;
     glm::vec3 lightColor;
     glm::vec3 lightColor1;
