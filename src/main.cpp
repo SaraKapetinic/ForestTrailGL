@@ -12,7 +12,7 @@
 #include "GUI.h"
 #include "Water.h"
 #include "InstancedModel.h"
-
+#include "TreeTranslation.h"
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -25,10 +25,15 @@ double y = 0.0;
 double g = 1.0;
 float i = 0.0;
 float j = 1.0;
+bool isDay = true;
+
 glm::vec3 bulbPos[] = {
         glm::vec3(-5.0f, 4.2f, -6.75f),
         glm::vec3(8.03f, 4.2f, 7.75f)
 };
+
+glm::vec3 sunPos(0.0f, 250.0f, 0.0f);
+glm::vec3 sunlight(1.0f, 1.0f, 1.0f);
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow *window, double xposIn, double yposIn);
@@ -89,27 +94,27 @@ int main() {
     Model lightBulbModel(lightBulbPath.c_str());
     InstancedModel treeModel(treeModelPath.c_str());
 
-    std::vector<glm::vec3> treeTranslations = {
-            glm::vec3(-150.0f, -2.0f, -50.0f),
-            glm::vec3(-250.0f, -2.0f, -100.0f),
-            glm::vec3(-350.0f, -2.0f, -80.0f),
-
-            glm::vec3(150.0f, -2.0f, 50.0f),
-            glm::vec3(250.0f, -2.0f, 50.0f),
-            glm::vec3(350.0f, -2.0f, 70.0f),
-
-            glm::vec3(-150.0f, -2.0f, -150.0f),
-            glm::vec3(-250.0f, -2.0f, -180.0f),
-            glm::vec3(-350.0f, -2.0f, -150.0f),
-
-            glm::vec3(120.0f, -2.0f, 120.0f),
-            glm::vec3(220.0f, -2.0f, 130.0f),
-            glm::vec3(320.0f, -2.0f, 140.0f),
-            glm::vec3(420.0f, -2.0f, 120.0f),
-            glm::vec3(-450.0f, -2.0f, -70.0f),
-            glm::vec3(-450.0f, -2.0f, -150.0f),
-            glm::vec3(420.0f, -2.0f, 200.0f),
-    };
+//    std::vector<glm::vec3> treeTranslations = {
+//            glm::vec3(-150.0f, -2.0f, -50.0f),
+//            glm::vec3(-250.0f, -2.0f, -100.0f),
+//            glm::vec3(-350.0f, -2.0f, -80.0f),
+//
+//            glm::vec3(150.0f, -2.0f, 50.0f),
+//            glm::vec3(250.0f, -2.0f, 50.0f),
+//            glm::vec3(350.0f, -2.0f, 70.0f),
+//
+//            glm::vec3(-150.0f, -2.0f, -150.0f),
+//            glm::vec3(-250.0f, -2.0f, -180.0f),
+//            glm::vec3(-350.0f, -2.0f, -150.0f),
+//
+//            glm::vec3(120.0f, -2.0f, 120.0f),
+//            glm::vec3(220.0f, -2.0f, 130.0f),
+//            glm::vec3(320.0f, -2.0f, 140.0f),
+//            glm::vec3(420.0f, -2.0f, 120.0f),
+//            glm::vec3(-450.0f, -2.0f, -70.0f),
+//            glm::vec3(-450.0f, -2.0f, -150.0f),
+//            glm::vec3(420.0f, -2.0f, 200.0f),
+//    };
 
     Terrain terrain(0, 0, 25);
     TerrainModel terrainModel = terrain.generateTerrain();
@@ -210,7 +215,8 @@ int main() {
         terrainShader.setMat4("model", model);
 
         initializeShader(terrainShader, ps, view, projection);
-
+        if(isDay)
+            terrainShader.setFloat("ambientStrength", 0.00000005);
         terrainModel.Draw(terrainShader);
 
         waterShader.use();
@@ -231,8 +237,11 @@ int main() {
         model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.15f));
         instanceShader.setMat4("model", model);
+        glDisable(GL_BLEND);
+        if(isDay)
+            instanceShader.setFloat("ambientStrength", 0.25);
         treeModel.Draw(instanceShader, treeTranslations.size());
-
+        glEnable(GL_BLEND);
 
         glDepthFunc(GL_LEQUAL);
         skyBoxShader.use();
@@ -356,10 +365,12 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
     if(key == GLFW_KEY_N && action == GLFW_PRESS){
         y = 0.0;
         nightMode = 1;
+        isDay = false;
     }
     if(key == GLFW_KEY_M && action == GLFW_PRESS){
         g = 1.0;
         nightMode = 2;
+        isDay = true;
     }
 
 }
@@ -377,6 +388,17 @@ inline void initializeShader(Shader& shader, ProgramState& programState, glm::ma
     shader.setFloat("pointLights[1].constant", 1.0);
     shader.setFloat("pointLights[1].linear",programState.linear);
     shader.setFloat("pointLights[1].quadratic", programState.quadratic);
+    shader.setVec3("pointLights[2].position", sunPos);
+    shader.setVec3("pointLights[2].color", sunlight);
+    shader.setFloat("pointLights[2].constant", 1.0);
+    shader.setFloat("pointLights[2].linear",programState.linear);
+    shader.setFloat("pointLights[2].quadratic", programState.quadratic);
+    shader.setBool("isDay", isDay);
+    if(isDay){
+        shader.setFloat("ambientStrength", 0.5);
+    }
+    else shader.setFloat("ambientStrength", 8.0);
+
 }
 void setDayNightCycle(){
 

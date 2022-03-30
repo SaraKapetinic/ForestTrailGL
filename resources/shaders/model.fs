@@ -15,8 +15,10 @@ struct PointLight {
 };
 
 uniform vec3 viewPos;
+uniform bool isDay;
+uniform float ambientStrength;
 uniform sampler2D texture_diffuse1;
-uniform PointLight pointLights[2];
+uniform PointLight pointLights[3];
 
 
 
@@ -30,14 +32,15 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos){
     float spec = pow(max(dot(viewDir, reflectDir), 0.0),32);
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance*distance));
 
-    float ambientStrength = 8.0;
     float specularStrength = 0.5;
 
-    vec3 ambient = ambientStrength * light.color * attenuation;
-    vec3 diffuse = diff * light.color * attenuation;
-    vec3 specular = specularStrength * spec * light.color * attenuation;
-
-    return (ambient+diffuse+specular);
+    vec3 ambient = ambientStrength * light.color ;
+    vec3 diffuse = diff * light.color ;
+    vec3 specular = specularStrength * spec * light.color;
+    if(isDay)
+        return (ambient+diffuse+specular);
+    else
+        return (ambient+diffuse+specular) * attenuation;
 }
 
 
@@ -48,8 +51,13 @@ void main()
 {
 
     vec4 result = vec4(0.0);
-    result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texture(texture_diffuse1, TexCoords);
-    result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texture(texture_diffuse1, TexCoords);
+    if(!isDay){
+        result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texture(texture_diffuse1, TexCoords);
+        result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texture(texture_diffuse1, TexCoords);
+    }
+    else {
+        result+=vec4(CalcPointLight(pointLights[2], Normal, FragPos),1.0) * texture(texture_diffuse1, TexCoords);
+    }
     FragColor = result;
 
     if( FragColor.a < 0.1)

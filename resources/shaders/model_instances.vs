@@ -10,7 +10,7 @@ out vec3 Normal;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
-uniform vec3 position[30];
+uniform vec3 position[100];
 
 
 void main()

@@ -15,12 +15,13 @@ struct PointLight {
 };
 
 uniform vec3 viewPos;
-
+uniform bool isDay;
+uniform float ambientStrength;
 uniform sampler2D grassText;
 uniform sampler2D dirtText;
 uniform sampler2D blendMap;
 uniform sampler2D stoneText;
-uniform PointLight pointLights[2];
+uniform PointLight pointLights[3];
 
 
 
@@ -35,13 +36,18 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos){
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance*distance));
 
     float ambientStrength = 8.0;
-    float specularStrength = 0.5;
+    if(isDay)
+            ambientStrength = 0.000005;
+    float specularStrength = 0.0005;
 
-    vec3 ambient = ambientStrength * light.color * attenuation;
-    vec3 diffuse = diff * light.color * attenuation;
-    vec3 specular = specularStrength * spec * light.color * attenuation;
+    vec3 ambient = ambientStrength * light.color;
+    vec3 diffuse = diff * light.color ;
+    vec3 specular = specularStrength * spec * light.color;
 
-    return (ambient+diffuse+specular);
+    if(isDay)
+            return (ambient+diffuse+specular);
+        else
+            return (ambient+diffuse+specular) * attenuation;
 }
 
 void main()
@@ -53,6 +59,15 @@ void main()
 
     result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texColor;
     result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texColor;
+
+      if(!isDay){
+           result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texColor;
+           result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texColor;
+        }
+        else {
+            result+=vec4(CalcPointLight(pointLights[2], Normal, FragPos),1.0) * texColor;
+        }
+
     FragColor = result;
 
     if( FragColor.a < 0.1)
