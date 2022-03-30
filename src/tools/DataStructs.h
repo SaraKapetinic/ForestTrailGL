@@ -2,8 +2,8 @@
 // Created by predrag on 3.3.22..
 //
 
-#ifndef CGRAPHICS_DATASTRUCTS_H
-#define CGRAPHICS_DATASTRUCTS_H
+#ifndef FORESTTRAILGL_DATASTRUCTS_H
+#define FORESTTRAILGL_DATASTRUCTS_H
 #include <string>
 #include <glm/glm.hpp>
 #include "Camera.h"
@@ -41,4 +41,4 @@ struct ProgramState{
 
 
 
-#endif //CGRAPHICS_DATASTRUCTS_H
+#endif //FORESTTRAILGL_DATASTRUCTS_H

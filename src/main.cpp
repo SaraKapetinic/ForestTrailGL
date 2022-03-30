@@ -49,7 +49,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_SAMPLES,10);
-    GLFWwindow* window = glfwCreateWindow(800, 600, "CGraphics", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "ForestTrailGL", NULL, NULL);
     if(window == NULL){
         std::cout << " Failed to create GLFW window" << std::endl;
         glfwTerminate();

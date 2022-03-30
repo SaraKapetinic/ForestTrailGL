@@ -2,8 +2,8 @@
 // Created by predrag on 27.2.22..
 //
 
-#ifndef CGRAPHICS_TERRAIN_H
-#define CGRAPHICS_TERRAIN_H
+#ifndef FORESTTRAILGL_TERRAIN_H
+#define FORESTTRAILGL_TERRAIN_H
 #include <vector>
 #include <string>
 #include <glm/glm.hpp>
@@ -42,4 +42,4 @@ private:
 };
 
 
-#endif //CGRAPHICS_TERRAIN_H
+#endif //FORESTTRAILGL_TERRAIN_H

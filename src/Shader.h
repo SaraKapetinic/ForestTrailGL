@@ -2,8 +2,8 @@
 // Created by predrag on 18.2.22..
 //
 
-#ifndef CGRAPHICS_SHADER_H
-#define CGRAPHICS_SHADER_H
+#ifndef FORESTTRAILGL_SHADER_H
+#define FORESTTRAILGL_SHADER_H
 #include <glm/glm.hpp>
 #include "glad/glad.h"
 #include <fstream>
@@ -28,4 +28,4 @@ public:
 };
 
 
-#endif //CGRAPHICS_SHADER_H
+#endif //FORESTTRAILGL_SHADER_H

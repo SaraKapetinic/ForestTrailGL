@@ -2,8 +2,8 @@
 // Created by predrag on 24.3.22..
 //
 
-#ifndef CGRAPHICS_GUI_H
-#define CGRAPHICS_GUI_H
+#ifndef FORESTTRAILGL_GUI_H
+#define FORESTTRAILGL_GUI_H
 #include "DataStructs.h"
 #include <iostream>
 #include <filesystem>
@@ -102,7 +102,7 @@ public:
             float pos_y = display_height*0.7;
 
             ImGui::SetNextWindowPos(ImVec2(pos_x,pos_y),ImGuiCond_FirstUseEver);
-            ImGui::Begin("CGraphics");
+            ImGui::Begin("ForestTrailGL");
             ImGui::ColorEdit3("Bulb color",(float*)&ps.lightColor);
             ImGui::ColorEdit3("Bulb color1",(float*)&ps.lightColor1);
 
@@ -174,4 +174,4 @@ private:
 };
 
 
-#endif //CGRAPHICS_GUI_H
+#endif //FORESTTRAILGL_GUI_H

@@ -2,8 +2,8 @@
 // Created by predrag on 30.3.22..
 //
 
-#ifndef CGRAPHICS_INSTANCEDMESH_H
-#define CGRAPHICS_INSTANCEDMESH_H
+#ifndef FORESTTRAILGL_INSTANCEDMESH_H
+#define FORESTTRAILGL_INSTANCEDMESH_H
 #include <glm/glm.hpp>
 #include "Shader.h"
 #include <string>
@@ -25,4 +25,4 @@ private:
 };
 
 
-#endif //CGRAPHICS_INSTANCEDMESH_H
+#endif //FORESTTRAILGL_INSTANCEDMESH_H

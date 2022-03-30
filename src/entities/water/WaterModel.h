@@ -2,8 +2,8 @@
 // Created by predrag on 28.3.22..
 //
 
-#ifndef CGRAPHICS_WATERMODEL_H
-#define CGRAPHICS_WATERMODEL_H
+#ifndef FORESTTRAILGL_WATERMODEL_H
+#define FORESTTRAILGL_WATERMODEL_H
 #include "DataStructs.h"
 #include "Shader.h"
 
@@ -48,4 +48,4 @@ private:
 };
 
 
-#endif //CGRAPHICS_WATERMODEL_H
+#endif //FORESTTRAILGL_WATERMODEL_H

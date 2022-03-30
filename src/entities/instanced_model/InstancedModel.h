@@ -2,8 +2,8 @@
 // Created by predrag on 30.3.22..
 //
 
-#ifndef CGRAPHICS_INSTANCEDMODEL_H
-#define CGRAPHICS_INSTANCEDMODEL_H
+#ifndef FORESTTRAILGL_INSTANCEDMODEL_H
+#define FORESTTRAILGL_INSTANCEDMODEL_H
 #include "Shader.h"
 #include <vector>
 #include "InstancedMesh.h"
@@ -33,4 +33,4 @@ private:
 };
 
 
-#endif //CGRAPHICS_INSTANCEDMODEL_H
+#endif //FORESTTRAILGL_INSTANCEDMODEL_H
