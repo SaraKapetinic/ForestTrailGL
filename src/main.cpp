@@ -11,6 +11,7 @@
 #include "SkyBox.h"
 #include "GUI.h"
 #include "Water.h"
+#include "InstancedModel.h"
 
 
 const unsigned int SCR_WIDTH = 800;
@@ -77,15 +78,38 @@ int main() {
     Shader skyBoxShader("../resources/shaders/skybox.vs","../resources/shaders/skybox.fs");
     Shader waterShader("../resources/shaders/model.vs", "../resources/shaders/water.fs");
 
-
+    Shader instanceShader("../resources/shaders/model_instances.vs", "../resources/shaders/model.fs");
 
     std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
     std::string streetLampPath = std::filesystem::path("../resources/models/StreetLamp/StreetLamp.obj");
     std::string lightBulbPath = std::filesystem::path("../resources/models/LightBulb/lightBulb.obj");
-
+    std::string treeModelPath = std::filesystem::path("../resources/models/Tree/tree.obj");
     Model bridgeModel(bridgePath.c_str());
     Model streetLampModel(streetLampPath.c_str());
     Model lightBulbModel(lightBulbPath.c_str());
+    InstancedModel treeModel(treeModelPath.c_str());
+
+    std::vector<glm::vec3> treeTranslations = {
+            glm::vec3(-150.0f, -2.0f, -50.0f),
+            glm::vec3(-250.0f, -2.0f, -100.0f),
+            glm::vec3(-350.0f, -2.0f, -80.0f),
+
+            glm::vec3(150.0f, -2.0f, 50.0f),
+            glm::vec3(250.0f, -2.0f, 50.0f),
+            glm::vec3(350.0f, -2.0f, 70.0f),
+
+            glm::vec3(-150.0f, -2.0f, -150.0f),
+            glm::vec3(-250.0f, -2.0f, -180.0f),
+            glm::vec3(-350.0f, -2.0f, -150.0f),
+
+            glm::vec3(120.0f, -2.0f, 120.0f),
+            glm::vec3(220.0f, -2.0f, 130.0f),
+            glm::vec3(320.0f, -2.0f, 140.0f),
+            glm::vec3(420.0f, -2.0f, 120.0f),
+            glm::vec3(-450.0f, -2.0f, -70.0f),
+            glm::vec3(-450.0f, -2.0f, -150.0f),
+            glm::vec3(420.0f, -2.0f, 200.0f),
+    };
 
     Terrain terrain(0, 0, 25);
     TerrainModel terrainModel = terrain.generateTerrain();
@@ -113,7 +137,7 @@ int main() {
 
     SkyBox skyBox(skyboxFaces, nightSkyboxFaces);
 
-    //SkyBox nightSkybox(nightFaces);
+
 
     glViewport(0, 0, 800, 600);
 
@@ -198,6 +222,17 @@ int main() {
         model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
         waterShader.setMat4("model", model);
         waterModel.Draw(waterShader);
+
+        instanceShader.use();
+        initializeShader(instanceShader, ps, view, projection);
+        for(int i=0; i < treeTranslations.size();i++)
+            instanceShader.setVec3("position[" + std::to_string(i)+ "]", treeTranslations[i]);
+
+        model = glm::mat4(1.0f);
+        model = glm::scale(model, glm::vec3(0.15f));
+        instanceShader.setMat4("model", model);
+        treeModel.Draw(instanceShader, treeTranslations.size());
+
 
         glDepthFunc(GL_LEQUAL);
         skyBoxShader.use();
