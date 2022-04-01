@@ -6,10 +6,10 @@
 
 | Key  |  Action | About  |
 |---|---|---|
-| W  |  Forward | Camera movement  |
-| S  | Backward  | Camera movement  |
-| A  |  Left | Camera movement  |
-| D  | Right  | Camera movement  |
+| W  |  Forward | Camera movement zoom in |
+| S  | Backward  | Camera movement zoom out |
+| A  |  Left | Camera movement left |
+| D  | Right  | Camera movement right |
 | N  |  Night mode |  Day to night  |
 | M  | Day mode  | Night to day  |
 | I  | ImGui  | Imgui on/off  |
