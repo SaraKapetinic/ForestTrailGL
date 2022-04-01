@@ -1,8 +1,8 @@
-# ForastTrailGL
+# ForestTrailGL
 
-###About project
+### About project
 
-###Comands
+### Comands
 
 | Key  |  Action | About  |
 |---|---|---|
