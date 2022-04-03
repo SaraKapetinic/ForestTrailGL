@@ -78,9 +78,9 @@ int main() {
     imgui.initImGui(window);
 
     Shader mainShader("../resources/shaders/model.vs", "../resources/shaders/model.fs");
-    Shader terrainShader("../resources/shaders/model.vs","../resources/shaders/terrain.fs");
+    Shader terrainShader("../resources/shaders/model.vs", "../resources/shaders/terrain.fs");
 
-    Shader skyBoxShader("../resources/shaders/skybox.vs","../resources/shaders/skybox.fs");
+    Shader skyBoxShader("../resources/shaders/skybox.vs", "../resources/shaders/skybox.fs");
     Shader waterShader("../resources/shaders/model.vs", "../resources/shaders/water.fs");
 
     Shader instanceShader("../resources/shaders/model_instances.vs", "../resources/shaders/model.fs");
