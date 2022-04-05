@@ -24,17 +24,25 @@ struct Texture {
 
 struct ProgramState{
     bool ImguiEnable= false;
-    Camera camera;
-    glm::vec3 lightColor;
-    glm::vec3 lightColor1;
+    Camera camera = Camera(glm::vec3(0.0f, 4.0f, 35.5f));
+    glm::vec3 lightColor[3];
+    glm::vec3 lightPosition[3];
     bool EnableMouseMovement = true;
     float linear = 0.7;
     float quadratic = 0.032;
     bool enableAntialiasing = false;
-
-    ProgramState()
-            :camera(glm::vec3(0.0f,4.0f,35.5f)),lightColor(glm::vec3(1.0f,1.0f,1.0f))
-            ,lightColor1(glm::vec3(1.0f,1.0f,1.0f)){}
+    const unsigned SCR_WIDTH = 800;
+    const unsigned SCR_HEIGHT = 600;
+    bool isDay = true;
+    float terrainSize;
+    float waterSize;
+    float skyboxOpacity=0;
+    bool skyBoxChange = false;
+//
+//
+//    ProgramState()
+//            :camera(glm::vec3(0.0f,4.0f,35.5f)),lightColor(glm::vec3(1.0f,1.0f,1.0f))
+//            ,lightColor1(glm::vec3(1.0f,1.0f,1.0f)){}
 
 };
 
