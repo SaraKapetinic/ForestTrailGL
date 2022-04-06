@@ -20,10 +20,10 @@ TerrainModel Terrain::generateTerrain() {
     for(int i=0;i<VERTEX_COUNT;i++){
         for(int j=0;j<VERTEX_COUNT;j++){
             float x, z;
-            //std::cout << "x: " << x * SIZE << "z: " << z * SIZE << std::endl;
+
             x = (float)j/((float)VERTEX_COUNT - 1);
             z = (float)i/((float)VERTEX_COUNT - 1);
-            //std::cout << getHeight(j,i) << std::endl;
+
             glm::vec3 Position( x * SIZE, getHeight(j,i),  z * SIZE);
             glm::vec3 Normal = getNormal(j,i);
             glm::vec2 TextureCords(x, z);

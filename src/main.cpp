@@ -1,7 +1,6 @@
 #include <iostream>
 #include "glad/include/glad/glad.h"
 #include <GLFW/glfw3.h>
-#include "stb_image.h"
 #include "Shader.h"
 #include "Model.h"
 #include <glm/gtc/matrix_transform.hpp>
@@ -11,8 +10,8 @@
 #include "GUI.h"
 #include "Water.h"
 #include "InstancedModel.h"
-#include "loader/Loader.h"
-#include "renderer/Renderer.h"
+#include "Loader.h"
+#include "Renderer.h"
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -23,14 +22,6 @@ bool shouldChange = false;
 ProgramState ps;
 
 bool isDay = true;
-
-glm::vec3 bulbPos[] = {
-        glm::vec3(-5.0f, 4.2f, -6.75f),
-        glm::vec3(8.03f, 4.2f, 7.75f)
-};
-
-glm::vec3 sunPos(0.0f, 250.0f, 0.0f);
-glm::vec3 sunlight(1.0f, 1.0f, 1.0f);
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow *window, double xposIn, double yposIn);
