@@ -4,7 +4,7 @@
 
 #include "SkyBox.h"
 #include "glad/glad.h"
-#include "../../../external/stb_image.h"
+#include "stb_image.h"
 #include <iostream>
 SkyBox::SkyBox(std::vector<std::string> &faces, std::vector<std::string> &nightFaces) {
     loadCubemapTextures(faces, dayTextureID);
