@@ -67,6 +67,7 @@ int main() {
     ps.lightColor[2] = glm::vec3 (1.0f, 1.0f, 1.0f);
 
 
+
     GUI imgui(ps, "../resources/programState.txt");
 
     imgui.initImGui(window);

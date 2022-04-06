@@ -30,7 +30,7 @@ struct ProgramState{
     bool EnableMouseMovement = true;
     float linear = 0.7;
     float quadratic = 0.032;
-    bool enableAntialiasing = false;
+    bool enableAntialiasing = true;
     const unsigned SCR_WIDTH = 800;
     const unsigned SCR_HEIGHT = 600;
     bool isDay = true;
