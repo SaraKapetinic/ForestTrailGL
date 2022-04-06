@@ -26,11 +26,16 @@ public:
     void renderScene();
     void renderWater(Shader& shader);
     void renderInstancedModel(Shader& shader);
+    void prepareHDR();
+    void renderQuad();
 private:
     std::unordered_map<std::string , Model>& models;
     std::unordered_map<std::string, Shader>& shaders;
     std::unordered_map<std::string, InstancedModel>& instancedModels;
     TerrainModel& terrainModel;
+    unsigned hdrFBO;
+
+    unsigned colorBuffer;
     WaterModel& waterModel;
     SkyBox& skyBox;
     glm::mat4 view, projection;
