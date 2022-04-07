@@ -68,13 +68,15 @@ void Renderer::renderTerrain(Shader &shader) {
 
 
 void Renderer::renderScene() {
-    float exposure = 0.2f;
+    float exposure = 1.0f;
     prepareHDR();
     glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);
-    renderModels(shaders.at("main"));
+
+
     renderTerrain(shaders.at("terrain"));
-    renderWater(shaders.at("water"));
     renderInstancedModel(shaders.at("instance"));
+    renderModels(shaders.at("main"));
+    renderWater(shaders.at("water"));
     renderSkybox(shaders.at("skybox"));
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
