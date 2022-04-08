@@ -64,13 +64,13 @@ void main()
            result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texColor;
            result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texColor;
            vec3 color = result.rgb;
-           color = color / (color + vec3(1.0));
+           //color = color / (color + vec3(1.0));
            result = vec4(color, 1.0);
         }
         else {
             result+=vec4(CalcPointLight(pointLights[2], Normal, FragPos),1.0) * texColor;
             vec3 color = result.rgb;
-            color = color / (color + vec3(1.0));
+            //color = color / (color + vec3(1.0));
             result = vec4(color, 1.0);
         }
 

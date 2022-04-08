@@ -106,7 +106,7 @@ unsigned InstancedModel::textureFromFile(const char *path) {
             format1 = GL_SRGB;
             format2 = GL_RGB;
         }
-            
+
         else if (nrComponents == 4){
             format1 = GL_SRGB_ALPHA;
             format2 = GL_RGBA;

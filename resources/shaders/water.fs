@@ -54,7 +54,7 @@ void main()
     result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texColor;
 
     vec3 color = result.rgb;
-    color = color / (color + vec3(1.0));
+    //color = color / (color + vec3(1.0));
     result = vec4(color, 0.5);
     FragColor = result;
     if( FragColor.a < 0.1)
