@@ -15,7 +15,9 @@
 class Renderer {
 public:
     Renderer(std::unordered_map<std::string, Model> &m, std::unordered_map<std::string, InstancedModel>& im, TerrainModel& t, WaterModel& w, SkyBox& sk,  ProgramState &p, std::unordered_map<std::string, Shader> &s)
-            : models(m), ps(p), shaders(s), waterModel(w), terrainModel(t), instancedModels(im), skyBox(sk){};
+            : models(m), ps(p), shaders(s), waterModel(w), terrainModel(t), instancedModels(im), skyBox(sk){
+        prepareHDR();
+    };
     void setMatrices(glm::mat4 v, glm::mat4 p){
         view = v;
         projection = p;

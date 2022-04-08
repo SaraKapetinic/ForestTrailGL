@@ -69,10 +69,11 @@ void Renderer::renderTerrain(Shader &shader) {
 
 void Renderer::renderScene() {
     float exposure = 1.0f;
-    prepareHDR();
+
     glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
+    glEnable(GL_DEPTH_TEST);
     renderTerrain(shaders.at("terrain"));
     renderInstancedModel(shaders.at("instance"));
     renderModels(shaders.at("main"));
@@ -80,6 +81,8 @@ void Renderer::renderScene() {
     renderSkybox(shaders.at("skybox"));
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glDisable(GL_DEPTH_TEST);
+
     shaders.at("hdr").use();
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, colorBuffer);

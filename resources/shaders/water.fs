@@ -52,9 +52,11 @@ void main()
     vec4 texColor = texture(waterText, TexCoords / 25.0);
     result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texColor;
     result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texColor;
-    result[3] = 0.5;
-    FragColor = result;
 
+    vec3 color = result.rgb;
+    color = color / (color + vec3(1.0));
+    result = vec4(color, 0.5);
+    FragColor = result;
     if( FragColor.a < 0.1)
     {
         discard;
