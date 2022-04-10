@@ -16,6 +16,8 @@ struct PointLight {
 
 uniform vec3 viewPos;
 uniform bool isDay;
+uniform bool shadowsEnabled;
+uniform int lightIndex;
 uniform float ambientStrength;
 uniform float far_plane;
 uniform sampler2D texture_diffuse1;
@@ -115,10 +117,15 @@ void main()
 
     vec4 result = vec4(0.0);
     if(!isDay){
-        result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texture(texture_diffuse1, TexCoords);
-        float shadow = ShadowCalculation(FragPos, pointLights[0].position) - ambientStrength;
-        result *= vec4( vec3(1.0 - shadow), 1.0);
-        //result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texture(texture_diffuse1, TexCoords);
+        if(shadowsEnabled){
+            result+=vec4(CalcPointLight(pointLights[lightIndex], Normal, FragPos),1.0) * texture(texture_diffuse1, TexCoords);
+            float shadow = ShadowCalculation(FragPos, pointLights[lightIndex].position) - ambientStrength;
+            result *= vec4( vec3(1.0 - shadow), 1.0);
+        }
+        else{
+            result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texture(texture_diffuse1, TexCoords);
+            result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texture(texture_diffuse1, TexCoords);
+        }
     }
     else {
         result+=vec4(CalcPointLight(pointLights[2], Normal, FragPos),1.0) * texture(texture_diffuse1, TexCoords);

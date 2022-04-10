@@ -33,16 +33,13 @@ struct ProgramState{
     bool enableAntialiasing = true;
     const unsigned SCR_WIDTH = 800;
     const unsigned SCR_HEIGHT = 600;
+    bool shadows = false;
     bool isDay = true;
     float terrainSize;
     float waterSize;
     float skyboxOpacity=0;
     bool skyBoxChange = false;
-//
-//
-//    ProgramState()
-//            :camera(glm::vec3(0.0f,4.0f,35.5f)),lightColor(glm::vec3(1.0f,1.0f,1.0f))
-//            ,lightColor1(glm::vec3(1.0f,1.0f,1.0f)){}
+    int lightIndex = 0;
 
 };
 

@@ -16,6 +16,8 @@ struct PointLight {
 
 uniform vec3 viewPos;
 uniform bool isDay;
+uniform bool shadowsEnabled;
+uniform int lightIndex;
 uniform float ambientStrength;
 uniform sampler2D grassText;
 uniform sampler2D dirtText;
@@ -117,14 +119,17 @@ void main()
     vec4 result = vec4(0.0);
     vec4 texColor = mix(texture(grassText, TexCoords), texture(dirtText, TexCoords), texture(blendMap, TexCoords / 25.0).r);
     texColor = mix(texColor, texture(stoneText, TexCoords), texture(blendMap, TexCoords / 25.0).g);
-    result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texColor;
-    result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texColor;
 
       if(!isDay){
-           result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texColor;
-           float shadow = ShadowCalculation(FragPos, pointLights[0].position) - ambientStrength;
-           result *= vec4( vec3(1.0 - shadow), 1.0);
-           //result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texColor;
+           if(shadowsEnabled){
+               result+=vec4(CalcPointLight(pointLights[lightIndex], Normal, FragPos),1.0) * texColor;
+               float shadow = ShadowCalculation(FragPos, pointLights[lightIndex].position) - ambientStrength;
+               result *= vec4( vec3(1.0 - shadow), 1.0);
+           }
+           else{
+                result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texColor;
+                result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texColor;
+           }
         }
         else {
             result+=vec4(CalcPointLight(pointLights[2], Normal, FragPos),1.0) * texColor;
