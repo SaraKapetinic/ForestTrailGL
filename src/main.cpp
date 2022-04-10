@@ -186,9 +186,10 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
         ps.ImguiEnable = !ps.ImguiEnable;
         if (ps.ImguiEnable) {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            ps.EnableMouseMovement = false;
         } else {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
+            ps.EnableMouseMovement = true;
         }
     }
     if(key == GLFW_KEY_F && action == GLFW_PRESS){
@@ -207,6 +208,16 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
     if(key == GLFW_KEY_M && action == GLFW_PRESS){
         ps.isDay = true;
         ps.skyBoxChange = true;
+    }
+    if(key == GLFW_KEY_O && action == GLFW_PRESS){
+        if(ps.shadows == true)
+            ps.shadows = false;
+        else ps.shadows = true;
+    }
+    if(key == GLFW_KEY_P && action == GLFW_PRESS){
+        if(ps.lightIndex == 0)
+            ps.lightIndex = 1;
+        else ps.lightIndex = 0;
     }
 
 }

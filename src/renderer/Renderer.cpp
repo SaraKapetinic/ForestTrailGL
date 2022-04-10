@@ -8,6 +8,12 @@
 void Renderer::renderModels(Shader &shader) {
     shader.use();
     initializeShader(shader);
+    shader.setFloat("far_plane", 25);
+    shader.setBool("shadowsEnabled", ps.shadows);
+    shader.setInt("lightIndex", ps.lightIndex);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, depthCubemap);
+    shader.setInt("depthMap", 1);
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(1.6f,1.5f,0.0f));
     model = glm::scale(model, glm::vec3(0.06f, 0.06f, 0.05f));
@@ -56,9 +62,13 @@ void Renderer::renderTerrain(Shader &shader) {
     model = glm::translate(model,glm::vec3(-ps.terrainSize / 2.0f * 0.25, -0.50f, -ps.terrainSize / 2.0f * 0.25) );
     model = glm::scale(model, glm::vec3(0.25f,0.25f,0.25f));
     shader.use();
-
+    glActiveTexture(GL_TEXTURE4);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, depthCubemap);
+    shader.setInt("depthMap", 4);
     shader.setMat4("model", model);
-
+    shader.setFloat("far_plane", 25);
+    shader.setBool("shadowsEnabled", ps.shadows);
+    shader.setInt("lightIndex", ps.lightIndex);
     initializeShader(shader);
     if(ps.isDay)
         shader.setFloat("ambientStrength", 0.00000005);
@@ -69,6 +79,11 @@ void Renderer::renderTerrain(Shader &shader) {
 
 void Renderer::renderScene() {
 
+    if(!ps.isDay && ps.shadows) {
+        renderToDepthBuffer();
+        glViewport(0, 0, ps.SCR_WIDTH, ps.SCR_HEIGHT);
+    }
+    glViewport(0, 0, ps.SCR_WIDTH, ps.SCR_HEIGHT);
     renderModels(shaders.at("main"));
     renderTerrain(shaders.at("terrain"));
     renderWater(shaders.at("water"));
@@ -78,9 +93,9 @@ void Renderer::renderScene() {
 
 void Renderer::renderWater(Shader &shader) {
     shader.use();
+    shader.setBool("shadowsEnabled", ps.shadows);
+    shader.setInt("lightIndex", ps.lightIndex);
     glm::mat4 model (1.0f);
-
-
     initializeShader(shader);
     model = glm::translate(model, glm::vec3(-ps.waterSize/2.0f * 0.25f, -1.0f, -ps.waterSize/2.0f * 0.25f));
     model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
@@ -111,7 +126,11 @@ void Renderer::renderInstancedModel(Shader &shader) {
     glm::mat4 model (1.0f);
     model = glm::scale(model, glm::vec3(0.15f));
     shader.setMat4("model", model);
-
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, depthCubemap);
+    shader.setInt("depthMap", 1);
+    shader.setBool("shadowsEnabled", ps.shadows);
+    shader.setInt("lightIndex", ps.lightIndex);
     glDisable(GL_BLEND);
     if(ps.isDay)
         shader.setFloat("ambientStrength", 0.25);
@@ -142,6 +161,50 @@ void Renderer::initializeShader(Shader &shader) {
     if(ps.isDay){
         shader.setFloat("ambientStrength", 0.5);
     }
-    else shader.setFloat("ambientStrength", 8.0);
+    else shader.setFloat("ambientStrength", 2.5);
+}
+
+void Renderer::initializeDepthBuffer() {
+    glGenFramebuffers(1, &depthMapFBO);
+    glGenTextures(1, &depthCubemap);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, depthCubemap);
+    for (unsigned int i = 0; i < 6; ++i)
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthCubemap, 0);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void Renderer::renderToDepthBuffer() {
+    float near_plane = 1.0f;
+    float far_plane = 25.0f;
+    glm::mat4 shadowProj = glm::perspective(glm::radians(90.0f), (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT, near_plane, far_plane);
+    std::vector<glm::mat4> shadowTransforms;
+    shadowTransforms.push_back(shadowProj * glm::lookAt(ps.lightPosition[ps.lightIndex], ps.lightPosition[ps.lightIndex] + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+    shadowTransforms.push_back(shadowProj * glm::lookAt(ps.lightPosition[ps.lightIndex], ps.lightPosition[ps.lightIndex] + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+    shadowTransforms.push_back(shadowProj * glm::lookAt(ps.lightPosition[ps.lightIndex], ps.lightPosition[ps.lightIndex] + glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
+    shadowTransforms.push_back(shadowProj * glm::lookAt(ps.lightPosition[ps.lightIndex], ps.lightPosition[ps.lightIndex] + glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f)));
+    shadowTransforms.push_back(shadowProj * glm::lookAt(ps.lightPosition[ps.lightIndex], ps.lightPosition[ps.lightIndex] + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+    shadowTransforms.push_back(shadowProj * glm::lookAt(ps.lightPosition[ps.lightIndex], ps.lightPosition[ps.lightIndex] + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+
+    glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+    glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    shaders.at("depth").use();
+    for (unsigned int i = 0; i < 6; ++i)
+        shaders.at("depth").setMat4("shadowMatrices[" + std::to_string(i) + "]", shadowTransforms[i]);
+    shaders.at("depth").setFloat("far_plane", far_plane);
+    shaders.at("depth").setVec3("lightPos", ps.lightPosition[ps.lightIndex]);
+    renderModels(shaders.at("depth"));
+    renderInstancedModel(shaders.at("depth"));
+    renderTerrain(shaders.at("depth"));
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
