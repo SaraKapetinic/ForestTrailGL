@@ -2,6 +2,18 @@
 
 ### About project
 
+ForestTrailGL is a project developed in order to demonstrate some advanced OpenGL features. 
+
+Advanced OpenGL features implemented:
+
+- Framebuffers
+- Cubemaps
+- Instancing
+- Antialiasing
+
+Advanced lighting techniques implemented:
+- Point shadows
+
 ### Comands
 
 | Key  |  Action | About  |
