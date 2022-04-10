@@ -16,7 +16,9 @@ class Renderer {
 public:
     Renderer(std::unordered_map<std::string, Model> &m, std::unordered_map<std::string, InstancedModel>& im, TerrainModel& t, WaterModel& w, SkyBox& sk,  ProgramState &p, std::unordered_map<std::string, Shader> &s)
             : models(m), ps(p), shaders(s), waterModel(w), terrainModel(t), instancedModels(im), skyBox(sk){
+
         initializeDepthBuffer();
+        prepareHDR();
     };
     void setMatrices(glm::mat4 v, glm::mat4 p){
         view = v;
@@ -28,6 +30,8 @@ public:
     void renderScene();
     void renderWater(Shader& shader);
     void renderInstancedModel(Shader& shader);
+    void prepareHDR();
+    void renderQuad();
 private:
     std::unordered_map<std::string , Model>& models;
     std::unordered_map<std::string, Shader>& shaders;
@@ -36,6 +40,9 @@ private:
     unsigned depthCubemap;
     const unsigned SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
     TerrainModel& terrainModel;
+    unsigned hdrFBO;
+
+    unsigned colorBuffer;
     WaterModel& waterModel;
     SkyBox& skyBox;
     glm::mat4 view, projection;

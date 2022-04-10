@@ -69,8 +69,9 @@ void main()
         result.a = 0.3;
 
     }
+    vec3 color = result.rgb;
+    result = vec4(color, 0.2);
     FragColor = result;
-
     if( FragColor.a < 0.1)
     {
         discard;
