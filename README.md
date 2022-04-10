@@ -27,5 +27,7 @@ Advanced lighting techniques implemented:
 | I  | ImGui  | Imgui on/off  |
 | F  | Anti aliasing on | Turn on anti aliasing  |
 | G  | Anti aliasing off  | Turn off antialiasing  |
+| O  | Shadows | Turn shadows on/off |
+| P  | Light source| Pick light source for shadows  |
 | Esc  | Exit  | Turn off project  |
 
