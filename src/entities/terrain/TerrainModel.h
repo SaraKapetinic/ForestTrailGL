@@ -2,8 +2,8 @@
 // Created by predrag on 1.3.22..
 //
 
-#ifndef CGRAPHICS_TERRAINMODEL_H
-#define CGRAPHICS_TERRAINMODEL_H
+#ifndef FORESTTRAILGL_TERRAINMODEL_H
+#define FORESTTRAILGL_TERRAINMODEL_H
 #include <glm/glm.hpp>
 #include <vector>
 #include "glad/glad.h"
@@ -58,4 +58,4 @@ private:
 };
 
 
-#endif //CGRAPHICS_TERRAINMODEL_H
+#endif //FORESTTRAILGL_TERRAINMODEL_H

@@ -20,10 +20,10 @@ TerrainModel Terrain::generateTerrain() {
     for(int i=0;i<VERTEX_COUNT;i++){
         for(int j=0;j<VERTEX_COUNT;j++){
             float x, z;
-            //std::cout << "x: " << x * SIZE << "z: " << z * SIZE << std::endl;
+
             x = (float)j/((float)VERTEX_COUNT - 1);
             z = (float)i/((float)VERTEX_COUNT - 1);
-            //std::cout << getHeight(j,i) << std::endl;
+
             glm::vec3 Position( x * SIZE, getHeight(j,i),  z * SIZE);
             glm::vec3 Normal = getNormal(j,i);
             glm::vec2 TextureCords(x, z);
@@ -70,25 +70,24 @@ float Terrain::getSize() const {
     return SIZE;
 }
 
-float Terrain::getHeight(int x, int y) {
+float Terrain::getHeight(int xpos, int ypos) {
 
-    if(x < 0 || x>=heightMapHeight || y < 0 || z>=heightMapHeight)
+    if(xpos < 0 || xpos>=heightMapHeight || ypos < 0 || ypos>=heightMapHeight)
         return 0;
-
-    float r = heightMap[4 * ( y * heightMapWidth + x)];
+    float r = heightMap[4 * ( ypos * heightMapWidth + xpos)];
     r/=255.0;
     r*=40;
     r-=20;
     return r;
 }
 
-glm::vec3 Terrain::getNormal(int x, int y) {
+glm::vec3 Terrain::getNormal(int xpos, int ypos) {
     float heightL, heightR;
     float heightU, heightD;
-    heightL = getHeight(x-1, y);
-    heightR = getHeight(x+1, y);
-    heightU = getHeight(x, y+1);
-    heightD = getHeight(x, y-1);
+    heightL = getHeight(xpos-1, ypos);
+    heightR = getHeight(xpos+1, ypos);
+    heightU = getHeight(xpos, ypos+1);
+    heightD = getHeight(xpos, ypos-1);
     glm::vec3 normal(heightL-heightR,2.0f,heightD-heightU);
     return glm::normalize(normal);
 }

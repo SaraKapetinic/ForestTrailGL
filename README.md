@@ -16,3 +16,4 @@
 | F  | Anti aliasing on | Turn on anti aliasing  |
 | G  | Anti aliasing off  | Turn off antialiasing  |
 | Esc  | Exit  | Turn off project  |
+

@@ -2,8 +2,8 @@
 // Created by sara on 26.2.22..
 //
 
-#ifndef CGRAPHICS_CAMERA_H
-#define CGRAPHICS_CAMERA_H
+#ifndef FORESTTRAILGL_CAMERA_H
+#define FORESTTRAILGL_CAMERA_H
 
 #include "glad/glad.h"
 #include <glm/glm.hpp>

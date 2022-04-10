@@ -2,8 +2,8 @@
 // Created by predrag on 24.3.22..
 //
 
-#ifndef CGRAPHICS_GUI_H
-#define CGRAPHICS_GUI_H
+#ifndef FORESTTRAILGL_GUI_H
+#define FORESTTRAILGL_GUI_H
 #include "DataStructs.h"
 #include <iostream>
 #include <filesystem>
@@ -29,12 +29,12 @@ public:
            <<ps.camera.Front.z<<'\n'
            <<ps.camera.Pitch<<'\n'
            <<ps.camera.Yaw<<'\n'
-           <<ps.lightColor.r<<'\n'
-           <<ps.lightColor.g<<'\n'
-           <<ps.lightColor.b<<'\n'
-           <<ps.lightColor1.r<<'\n'
-           <<ps.lightColor1.g<<'\n'
-           <<ps.lightColor1.b<<'\n'
+           <<ps.lightColor[0].r<<'\n'
+           <<ps.lightColor[0].g<<'\n'
+           <<ps.lightColor[0].b<<'\n'
+           <<ps.lightColor[1].r<<'\n'
+           <<ps.lightColor[1].g<<'\n'
+           <<ps.lightColor[1].b<<'\n'
            <<ps.linear<<'\n'
            <<ps.quadratic;
     };
@@ -51,12 +51,12 @@ public:
              >>ps.camera.Front.z
              >>ps.camera.Pitch
              >>ps.camera.Yaw
-             >>ps.lightColor.r
-             >>ps.lightColor.g
-             >>ps.lightColor.b
-             >>ps.lightColor1.r
-             >>ps.lightColor1.g
-             >>ps.lightColor1.b
+             >>ps.lightColor[0].r
+             >>ps.lightColor[0].g
+             >>ps.lightColor[0].b
+             >>ps.lightColor[1].r
+             >>ps.lightColor[1].g
+             >>ps.lightColor[1].b
              >>ps.linear
              >>ps.quadratic;
 
@@ -102,9 +102,9 @@ public:
             float pos_y = display_height*0.7;
 
             ImGui::SetNextWindowPos(ImVec2(pos_x,pos_y),ImGuiCond_FirstUseEver);
-            ImGui::Begin("CGraphics");
-            ImGui::ColorEdit3("Bulb color",(float*)&ps.lightColor);
-            ImGui::ColorEdit3("Bulb color1",(float*)&ps.lightColor1);
+            ImGui::Begin("ForestTrailGL");
+            ImGui::ColorEdit3("Bulb color",(float*)&ps.lightColor[0]);
+            ImGui::ColorEdit3("Bulb color1",(float*)&ps.lightColor[1]);
 
             float& linear = ps.linear;
             float& quadratic = ps.quadratic;
@@ -174,4 +174,4 @@ private:
 };
 
 
-#endif //CGRAPHICS_GUI_H
+#endif //FORESTTRAILGL_GUI_H

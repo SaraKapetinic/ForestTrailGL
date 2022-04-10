@@ -2,8 +2,8 @@
 // Created by predrag on 17.3.22..
 //
 
-#ifndef CGRAPHICS_SKYBOX_H
-#define CGRAPHICS_SKYBOX_H
+#ifndef FORESTTRAILGL_SKYBOX_H
+#define FORESTTRAILGL_SKYBOX_H
 
 #include <vector>
 #include <string>
@@ -23,4 +23,4 @@ private:
 };
 
 
-#endif //CGRAPHICS_SKYBOX_H
+#endif //FORESTTRAILGL_SKYBOX_H

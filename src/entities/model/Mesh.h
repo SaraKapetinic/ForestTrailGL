@@ -2,8 +2,8 @@
 // Created by predrag on 18.2.22..
 //
 
-#ifndef CGRAPHICS_MESH_H
-#define CGRAPHICS_MESH_H
+#ifndef FORESTTRAILGL_MESH_H
+#define FORESTTRAILGL_MESH_H
 
 #include <glm/glm.hpp>
 #include "Shader.h"
@@ -26,4 +26,4 @@ private:
 };
 
 
-#endif //CGRAPHICS_MESH_H
+#endif //FORESTTRAILGL_MESH_H

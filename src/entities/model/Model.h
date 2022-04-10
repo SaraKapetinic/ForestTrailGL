@@ -2,16 +2,16 @@
 // Created by predrag on 18.2.22..
 //
 
-#ifndef CGRAPHICS_MODEL_H
-#define CGRAPHICS_MODEL_H
-#include "../../Shader.h"
+#ifndef FORESTTRAILGL_MODEL_H
+#define FORESTTRAILGL_MODEL_H
+#include "Shader.h"
 #include <vector>
 #include "Mesh.h"
 #include <string>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include "../../../external/stb_image.h"
+#include "stb_image.h"
 
 class Model {
 public:
@@ -35,4 +35,4 @@ private:
 };
 
 
-#endif //CGRAPHICS_MODEL_H
+#endif //FORESTTRAILGL_MODEL_H
