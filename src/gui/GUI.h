@@ -141,10 +141,10 @@ public:
 
             ImGui::Checkbox("Enable Antialiasing",&ps.enableAntialiasing);
             if(ps.enableAntialiasing){
-                glEnable(GL_MULTISAMPLE);
+
                 ps.enableAntialiasing = true;
             }else{
-                glDisable(GL_MULTISAMPLE);
+
                 ps.enableAntialiasing = false;
             }
 

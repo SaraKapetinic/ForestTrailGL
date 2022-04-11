@@ -193,11 +193,11 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
         }
     }
     if(key == GLFW_KEY_F && action == GLFW_PRESS){
-        glEnable(GL_MULTISAMPLE);
+
         ps.enableAntialiasing = true;
     }
     if(key == GLFW_KEY_G && action == GLFW_PRESS){
-        glDisable(GL_MULTISAMPLE);
+
         ps.enableAntialiasing = false;
     }
 
@@ -210,7 +210,7 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
         ps.skyBoxChange = true;
     }
     if(key == GLFW_KEY_O && action == GLFW_PRESS){
-        if(ps.shadows == true)
+        if(ps.shadows)
             ps.shadows = false;
         else ps.shadows = true;
     }

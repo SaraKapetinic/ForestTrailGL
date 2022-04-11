@@ -78,7 +78,7 @@ void Renderer::renderTerrain(Shader &shader) {
 
 
 void Renderer::renderScene() {
-    float exposure = 2.0f;
+    float exposure = 5.0f;
 
     glEnable(GL_DEPTH_TEST);
 
@@ -86,24 +86,55 @@ void Renderer::renderScene() {
         renderToDepthBuffer();
         glViewport(0, 0, ps.SCR_WIDTH, ps.SCR_HEIGHT);
     }
-    glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glViewport(0, 0, ps.SCR_WIDTH, ps.SCR_HEIGHT);
-    renderModels(shaders.at("main"));
-    renderTerrain(shaders.at("terrain"));
-    renderInstancedModel(shaders.at("instance"));
-    renderModels(shaders.at("main"));
-    renderWater(shaders.at("water"));
-    renderSkybox(shaders.at("skybox"));
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    if(ps.enableAntialiasing){
+
+        glViewport(0, 0, ps.SCR_WIDTH, ps.SCR_HEIGHT);
+        glBindFramebuffer(GL_FRAMEBUFFER, multisampleFBO);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        renderModels(shaders.at("main"));
+        renderTerrain(shaders.at("terrain"));
+        renderInstancedModel(shaders.at("instance"));
+        renderModels(shaders.at("main"));
+        renderWater(shaders.at("water"));
+        renderSkybox(shaders.at("skybox"));
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, multisampleFBO);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, hdrFBO);
+        glBlitFramebuffer(0, 0, ps.SCR_WIDTH, ps.SCR_HEIGHT, 0, 0, ps.SCR_WIDTH, ps.SCR_HEIGHT, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    }
+    else {
+        glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        renderModels(shaders.at("main"));
+        renderTerrain(shaders.at("terrain"));
+        renderInstancedModel(shaders.at("instance"));
+        renderModels(shaders.at("main"));
+        renderWater(shaders.at("water"));
+        renderSkybox(shaders.at("skybox"));
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     shaders.at("hdr").use();
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, colorBuffer);
-    shaders.at("hdr").setFloat("exposure", exposure);
+
+    if(ps.enableAntialiasing) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, colorBuffer);
+        shaders.at("hdr").setFloat("exposure", exposure);
+        shaders.at("hdr").setInt("hdrBuffer", 0);
+    }
+    else {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, colorBuffer);
+        shaders.at("hdr").setInt("hdrBuffer", 0);
+        shaders.at("hdr").setFloat("exposure", exposure);
+    }
 
     renderQuad();
+
 
 }
 
@@ -232,6 +263,7 @@ void Renderer::prepareHDR() {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, ps.SCR_WIDTH, ps.SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
     unsigned int rboDepth;
     glGenRenderbuffers(1, &rboDepth);
     glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
@@ -277,6 +309,26 @@ void Renderer::renderQuad() {
     glBindVertexArray(quadVAO);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glBindVertexArray(0);
+
+}
+
+void Renderer::prepareAntialiasing() {
+    glGenFramebuffers(1, &multisampleFBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, multisampleFBO);
+    glGenTextures(1, &sampleTex);
+    glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, sampleTex);
+    glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 16, GL_RGB16F, ps.SCR_WIDTH, ps.SCR_HEIGHT,GL_TRUE);
+    glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, sampleTex, 0);
+    unsigned rbo;
+    glGenRenderbuffers(1, &rbo);
+    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, 16, GL_DEPTH32F_STENCIL8, ps.SCR_WIDTH, ps.SCR_HEIGHT);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 }
 

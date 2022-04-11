@@ -19,6 +19,7 @@ public:
 
         initializeDepthBuffer();
         prepareHDR();
+        prepareAntialiasing();
     };
     void setMatrices(glm::mat4 v, glm::mat4 p){
         view = v;
@@ -41,8 +42,9 @@ private:
     const unsigned SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
     TerrainModel& terrainModel;
     unsigned hdrFBO;
-
+    unsigned sampleTex;
     unsigned colorBuffer;
+    unsigned multisampleFBO;
     WaterModel& waterModel;
     SkyBox& skyBox;
     glm::mat4 view, projection;
@@ -50,6 +52,7 @@ private:
     void initializeShader(Shader &shader);
     void initializeDepthBuffer();
     void renderToDepthBuffer();
+    void prepareAntialiasing();
 };
 
 
