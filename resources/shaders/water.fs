@@ -60,6 +60,7 @@ void main()
         else {
             result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texColor;
             result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texColor;
+            result*=vec4(0.2);
             result[3] = 0.3;
         }
 
