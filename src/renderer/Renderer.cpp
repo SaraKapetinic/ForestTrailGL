@@ -126,7 +126,7 @@ void Renderer::renderScene() {
     shaders.at("hdr").setFloat("exposure", exposure);
 
     renderQuad();
-    
+
 }
 
 void Renderer::renderWater(Shader &shader) {
