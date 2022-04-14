@@ -1,6 +1,7 @@
 # ForestTrailGL
 
 ### About project
+Faculty project for the subject of Computer Graphics. 
 
 ### Comands
 
