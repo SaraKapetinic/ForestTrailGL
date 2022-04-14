@@ -12,7 +12,6 @@ uniform mat4 view;
 uniform mat4 projection;
 uniform vec3 position[100];
 
-
 void main()
 {
     TexCoords = aTexCoords;

@@ -13,7 +13,6 @@ void InstancedModel::loadInstancedModel(std::string path) {
 
         return;
     }
-
     directory = path.substr(0, path.find_last_of('/'));
     processInstancedNode(scene->mRootNode, scene);
 }
@@ -106,7 +105,6 @@ unsigned InstancedModel::textureFromFile(const char *path) {
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 
         glBindTexture(GL_TEXTURE_2D, textureID);
         glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);

@@ -16,7 +16,6 @@ TerrainModel Terrain::generateTerrain() {
     VERTEX_COUNT = heightMapHeight;
     indices.resize(6*(VERTEX_COUNT-1)*(VERTEX_COUNT-1));
 
-
     for(int i=0;i<VERTEX_COUNT;i++){
         for(int j=0;j<VERTEX_COUNT;j++){
             float x, z;
@@ -64,7 +63,6 @@ void Terrain::loadHeightMap(std::string path) {
         heightMap = nullptr;
     }
 }
-
 
 float Terrain::getSize() const {
     return SIZE;

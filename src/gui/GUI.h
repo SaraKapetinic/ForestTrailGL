@@ -63,7 +63,6 @@ public:
        }
     };
     void initImGui(GLFWwindow* window){
-
         loadFromDisk();
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -172,6 +171,5 @@ private:
     std::string path;
 
 };
-
 
 #endif //FORESTTRAILGL_GUI_H

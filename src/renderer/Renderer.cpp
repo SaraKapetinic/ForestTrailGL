@@ -8,23 +8,25 @@
 void Renderer::renderModels(Shader &shader) {
     shader.use();
     initializeShader(shader);
+
+    //transformations for bridge
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(1.6f,1.5f,0.0f));
     model = glm::scale(model, glm::vec3(0.06f, 0.06f, 0.05f));
     model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0, 0.0, 0.0));
     model = glm::rotate(model, glm::radians(60.0f), glm::vec3(0.0, 0.0, 1.0));
-
     shader.setMat4("model", model);
     models.at("bridge").Draw(shader);
 
-
+    //transformations for lamp1
     model = glm::mat4(1.0f);
-
     model = glm::scale(model,glm::vec3(0.5f,0.5f,0.5f));
     model = glm::translate(model,glm::vec3(16.0f,-1.0f,15.5f));
     model = glm::rotate(model,glm::radians(60.0f), glm::vec3(0.0,1.0,0.0));
     shader.setMat4("model", model);
     models.at("lamp").Draw(shader);
+
+    //transformations for lamp1
 
     model = glm::mat4(1.0f);
     model = glm::scale(model,glm::vec3(0.5f,0.5f,0.5f));
@@ -33,30 +35,27 @@ void Renderer::renderModels(Shader &shader) {
     shader.setMat4("model", model);
     models.at("lamp").Draw(shader);
 
+    //transformations for light bulb1
     model = glm::mat4 (1.0f);
     model = glm::translate(model,ps.lightPosition[0]);
     model = glm::scale(model,glm::vec3(0.07f,0.07f,0.07f));
-
     shader.setMat4("model", model);
     models.at("lightBulb").Draw(shader);
 
+    //transformations for light bulb1
     model = glm::mat4 (1.0f);
     model = glm::translate(model,ps.lightPosition[1]);
     model = glm::scale(model,glm::vec3(0.07f,0.07f,0.07f));
-
-
     shader.setMat4("model", model);
     models.at("lightBulb").Draw(shader);
-
-
 }
 
 void Renderer::renderTerrain(Shader &shader) {
     glm::mat4 model (1.0f);
     model = glm::translate(model,glm::vec3(-ps.terrainSize / 2.0f * 0.25, -0.50f, -ps.terrainSize / 2.0f * 0.25) );
     model = glm::scale(model, glm::vec3(0.25f,0.25f,0.25f));
-    shader.use();
 
+    shader.use();
     shader.setMat4("model", model);
 
     initializeShader(shader);
@@ -65,10 +64,7 @@ void Renderer::renderTerrain(Shader &shader) {
     terrainModel.Draw(shader);
 }
 
-
-
 void Renderer::renderScene() {
-
     renderModels(shaders.at("main"));
     renderTerrain(shaders.at("terrain"));
     renderWater(shaders.at("water"));
@@ -78,10 +74,9 @@ void Renderer::renderScene() {
 
 void Renderer::renderWater(Shader &shader) {
     shader.use();
-    glm::mat4 model (1.0f);
-
-
     initializeShader(shader);
+
+    glm::mat4 model (1.0f);
     model = glm::translate(model, glm::vec3(-ps.waterSize/2.0f * 0.25f, -1.0f, -ps.waterSize/2.0f * 0.25f));
     model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
     shader.setMat4("model", model);

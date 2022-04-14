@@ -13,15 +13,14 @@
 #include "Loader.h"
 #include "Renderer.h"
 
-const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_WIDTH  = 800;
 const unsigned int SCR_HEIGHT = 600;
-float lastX = SCR_WIDTH / 2.0f;
-float lastY = SCR_HEIGHT / 2.0f;
-bool firstMouse = true;
-bool shouldChange = false;
+float lastX                   = SCR_WIDTH / 2.0f;
+float lastY                   = SCR_HEIGHT / 2.0f;
+bool firstMouse               = true;
+bool shouldChange             = false;
+bool isDay                    = true;
 ProgramState ps;
-
-bool isDay = true;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow *window, double xposIn, double yposIn);
@@ -66,10 +65,7 @@ int main() {
     ps.lightColor[1] = glm::vec3 (1.0f);
     ps.lightColor[2] = glm::vec3 (1.0f, 1.0f, 1.0f);
 
-
-
     GUI imgui(ps, "../resources/programState.txt");
-
     imgui.initImGui(window);
 
     std::unordered_map<std::string, Shader> shaders;
@@ -84,7 +80,6 @@ int main() {
     loadInstancedModels(instancedModels);
 
     Renderer renderer(models, instancedModels, terrainModel, waterModel, skyBox, ps, shaders );
-
 
     glViewport(0, 0, 800, 600);
 
@@ -136,7 +131,6 @@ void processInput(GLFWwindow* window){
                     ps.camera.Position += speed * ps.camera.Front;
         }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-
         if(ps.camera.Position.y > 0 )
             ps.camera.Position -= speed * ps.camera.Front;
         else {
@@ -144,14 +138,16 @@ void processInput(GLFWwindow* window){
                 if(ps.camera.Front.y < 0 )
                     ps.camera.Position -= speed * ps.camera.Front;
         }
+
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
         ps.camera.Position -= glm::normalize(glm::cross(ps.camera.Front, ps.camera.Up)) * speed;
+
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         ps.camera.Position += glm::normalize(glm::cross(ps.camera.Front, ps.camera.Up)) * speed;
+
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
-
 }
 
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
@@ -186,15 +182,17 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
         ps.ImguiEnable = !ps.ImguiEnable;
         if (ps.ImguiEnable) {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        } else {
+        }
+        else {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
         }
     }
+
     if(key == GLFW_KEY_F && action == GLFW_PRESS){
         glEnable(GL_MULTISAMPLE);
         ps.enableAntialiasing = true;
     }
+
     if(key == GLFW_KEY_G && action == GLFW_PRESS){
         glDisable(GL_MULTISAMPLE);
         ps.enableAntialiasing = false;
@@ -204,11 +202,11 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
         ps.isDay = false;
         ps.skyBoxChange = true;
     }
+
     if(key == GLFW_KEY_M && action == GLFW_PRESS){
         ps.isDay = true;
         ps.skyBoxChange = true;
     }
-
 }
 
 void setDayNightCycle(){

@@ -19,8 +19,6 @@ uniform vec3 viewPos;
 uniform sampler2D waterText;
 uniform PointLight pointLights[2];
 
-
-
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos){
     vec3 viewDir = normalize(viewPos-light.position);
     vec3 lightDir = normalize(light.position - fragPos);
@@ -41,13 +39,8 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos){
     return (ambient+diffuse+specular);
 }
 
-
-
-
-
 void main()
 {
-
     vec4 result = vec4(0.0);
     vec4 texColor = texture(waterText, TexCoords / 25.0);
     result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texColor;
@@ -59,5 +52,4 @@ void main()
     {
         discard;
     }
-
 };

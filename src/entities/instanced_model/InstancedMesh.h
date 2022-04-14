@@ -10,7 +10,6 @@
 #include <vector>
 #include "DataStructs.h"
 
-
 class InstancedMesh {
 public:
 

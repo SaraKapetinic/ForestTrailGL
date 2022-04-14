@@ -12,19 +12,16 @@ void Model::Draw(Shader &shader) {
 
 void Model::loadModel(std::string path) {
     Assimp::Importer import;
-
     const aiScene *scene = import.ReadFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
 
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode){
         std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
-
         return;
     }
 
     directory = path.substr(0, path.find_last_of('/'));
 
     processNode(scene->mRootNode, scene);
-
 }
 
 Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
@@ -37,11 +34,13 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
         Vertex vertex;
 
         glm::vec3 vector;
+        //setting Mesh position
         vector.x = mesh->mVertices[i].x;
         vector.y = mesh->mVertices[i].y;
         vector.z = mesh->mVertices[i].z;
         vertex.Position = vector;
 
+        //setting Mesh normals
         vector.x = mesh->mNormals[i].x;
         vector.y = mesh->mNormals[i].y;
         vector.z = mesh->mNormals[i].z;
@@ -144,7 +143,6 @@ unsigned Model::TextureFromFile(const char *path, const std::string &directory) 
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 
         glBindTexture(GL_TEXTURE_2D, textureID);
         glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);

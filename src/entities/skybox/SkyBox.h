@@ -12,7 +12,6 @@ class SkyBox {
 public:
     SkyBox(std::vector<std::string> &faces, std::vector<std::string> &nightFaces);
     SkyBox();
-
     void Draw();
 
 private:

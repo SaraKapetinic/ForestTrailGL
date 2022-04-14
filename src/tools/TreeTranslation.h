@@ -11,6 +11,7 @@
 
 
 std::vector<glm::vec3> treeTranslations = {
+
         glm::vec3(-150.0f, -2.0f, -50.0f),
         glm::vec3(-250.0f, -2.0f, -100.0f),
         glm::vec3(-350.0f, -2.0f, -80.0f),

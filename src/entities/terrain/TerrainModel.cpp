@@ -59,10 +59,7 @@ void TerrainModel::loadTerrainTextures(std::vector<const char *> &paths) {
             stbi_image_free(data);
         }
 
-
         terrainTex[i].id = textureID;
         terrainTex[i].path = paths[i];
     }
-
-
 }

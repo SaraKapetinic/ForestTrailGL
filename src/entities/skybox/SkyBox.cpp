@@ -11,6 +11,7 @@ SkyBox::SkyBox(std::vector<std::string> &faces, std::vector<std::string> &nightF
     loadCubemapTextures(nightFaces, nightTextureID);
 
 }
+
 SkyBox::SkyBox() {}
 
 void SkyBox::loadCubemapTextures(std::vector<std::string> &faces, unsigned &textureID) {

@@ -65,7 +65,6 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath, const char *geo
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     };
 
-
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment,1, &fShaderCode, NULL);
     glCompileShader(fragment);
@@ -90,6 +89,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath, const char *geo
     id = glCreateProgram();
     glAttachShader(id, vertex);
     glAttachShader(id, fragment);
+
     if(geometryPath)
         glAttachShader(id, geometry);
     glLinkProgram(id);
@@ -124,7 +124,6 @@ void Shader::setFloat(const std::string &name, float value) const {
 void Shader::setVec3(const std::string &name, glm::vec3& value) const {
     glUniform3fv(glGetUniformLocation(id, name.c_str()), 1,&value[0]);
 }
-
 
 void Shader::setMat4(const std::string &name, const glm::mat4 &mat) const
 {

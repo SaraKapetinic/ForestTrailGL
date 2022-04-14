@@ -20,8 +20,6 @@ uniform float ambientStrength;
 uniform sampler2D texture_diffuse1;
 uniform PointLight pointLights[3];
 
-
-
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos){
     vec3 viewDir = normalize(viewPos-light.position);
     vec3 lightDir = normalize(light.position - fragPos);
@@ -31,7 +29,6 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos){
     float diff = max(dot(normal, lightDir), 0.0);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0),32);
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance*distance));
-
     float specularStrength = 0.5;
 
     vec3 ambient = ambientStrength * light.color ;
@@ -43,13 +40,8 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos){
         return (ambient+diffuse+specular) * attenuation;
 }
 
-
-
-
-
 void main()
 {
-
     vec4 result = vec4(0.0);
     if(!isDay){
         result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texture(texture_diffuse1, TexCoords);
@@ -64,5 +56,4 @@ void main()
     {
         discard;
     }
-
 };

@@ -23,8 +23,6 @@ uniform sampler2D blendMap;
 uniform sampler2D stoneText;
 uniform PointLight pointLights[3];
 
-
-
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos){
     vec3 viewDir = normalize(viewPos-light.position);
     vec3 lightDir = normalize(light.position - fragPos);
@@ -45,14 +43,13 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos){
     vec3 specular = specularStrength * spec * light.color;
 
     if(isDay)
-            return (ambient+diffuse+specular);
-        else
-            return (ambient+diffuse+specular) * attenuation;
+        return (ambient+diffuse+specular);
+    else
+        return (ambient+diffuse+specular) * attenuation;
 }
 
 void main()
 {
-
     vec4 result = vec4(0.0);
     vec4 texColor = mix(texture(grassText, TexCoords), texture(dirtText, TexCoords), texture(blendMap, TexCoords / 25.0).r);
     texColor = mix(texColor, texture(stoneText, TexCoords), texture(blendMap, TexCoords / 25.0).g);
@@ -60,13 +57,13 @@ void main()
     result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texColor;
     result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texColor;
 
-      if(!isDay){
-           result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texColor;
-           result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texColor;
-        }
-        else {
-            result+=vec4(CalcPointLight(pointLights[2], Normal, FragPos),1.0) * texColor;
-        }
+    if(!isDay){
+        result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texColor;
+        result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texColor;
+    }
+    else {
+        result+=vec4(CalcPointLight(pointLights[2], Normal, FragPos),1.0) * texColor;
+    }
 
     FragColor = result;
 
@@ -74,5 +71,4 @@ void main()
     {
         discard;
     }
-
 };

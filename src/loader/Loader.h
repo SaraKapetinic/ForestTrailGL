@@ -13,9 +13,11 @@ void loadModels(std::unordered_map<std::string, Model>& models){
     std::string bridgePath = std::filesystem::path("../resources/models/bridge.obj");
     std::string streetLampPath = std::filesystem::path("../resources/models/StreetLamp/StreetLamp.obj");
     std::string lightBulbPath = std::filesystem::path("../resources/models/LightBulb/lightBulb.obj");
+
     Model bridgeModel = Model(bridgePath.c_str());
     Model streetLampModel(streetLampPath.c_str());
     Model lightBulbModel(lightBulbPath.c_str());
+
     models.emplace("bridge", bridgeModel);
     models.emplace("lamp", streetLampModel);
     models.emplace("lightBulb", lightBulbModel);
@@ -27,6 +29,7 @@ void loadShaders(std::unordered_map<std::string, Shader>& shaders){
     Shader skyBoxShader("../resources/shaders/skybox.vs", "../resources/shaders/skybox.fs");
     Shader waterShader("../resources/shaders/model.vs", "../resources/shaders/water.fs");
     Shader instanceShader("../resources/shaders/model_instances.vs", "../resources/shaders/model.fs");
+
     shaders.emplace("main", mainShader);
     shaders.emplace("terrain", terrainShader);
     shaders.emplace("skybox", skyBoxShader);
