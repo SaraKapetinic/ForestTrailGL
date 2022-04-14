@@ -78,7 +78,7 @@ void Renderer::renderTerrain(Shader &shader) {
 
 
 void Renderer::renderScene() {
-    float exposure = 5.0f;
+    float exposure = 3.0f;
 
     glEnable(GL_DEPTH_TEST);
 
