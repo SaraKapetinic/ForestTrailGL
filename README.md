@@ -19,8 +19,8 @@ Advanced lighting techniques implemented:
 
 | Key  |  Action | About                         |
 |---|---|-------------------------------|
-| W  |  Forward | Camera movement zoom in       |
-| S  | Backward  | Camera movement zoom out      |
+| W  |  Forward | Camera movement forward     |
+| S  | Backward  | Camera movement backward      |
 | A  |  Left | Camera movement left          |
 | D  | Right  | Camera movement right         |
 | N  |  Night mode | Day to night                  |
