@@ -151,7 +151,14 @@ void processInput(GLFWwindow* window){
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         ps.camera.Position += glm::normalize(glm::cross(ps.camera.Front, ps.camera.Up)) * speed;
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        if(glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_NORMAL) {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            ps.EnableMouseMovement = true;
+        }
+        else {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            ps.EnableMouseMovement = false;
+        }
     }
 
 }
