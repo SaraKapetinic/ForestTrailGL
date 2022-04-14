@@ -115,6 +115,8 @@ int main() {
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height){
     glViewport(0,0, width, height);
+    ps.SCR_HEIGHT = height;
+    ps.SCR_WIDTH = width;
 }
 
 void processInput(GLFWwindow* window){
@@ -146,7 +148,14 @@ void processInput(GLFWwindow* window){
         ps.camera.Position += glm::normalize(glm::cross(ps.camera.Front, ps.camera.Up)) * speed;
 
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        if(glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_NORMAL) {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            ps.EnableMouseMovement = true;
+        }
+        else {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            ps.EnableMouseMovement = false;
+        }
     }
 }
 
@@ -182,19 +191,21 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
         ps.ImguiEnable = !ps.ImguiEnable;
         if (ps.ImguiEnable) {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        }
-        else {
+            ps.EnableMouseMovement = false;
+        } else {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            ps.EnableMouseMovement = true;
+
         }
     }
 
     if(key == GLFW_KEY_F && action == GLFW_PRESS){
-        glEnable(GL_MULTISAMPLE);
+
         ps.enableAntialiasing = true;
     }
 
     if(key == GLFW_KEY_G && action == GLFW_PRESS){
-        glDisable(GL_MULTISAMPLE);
+
         ps.enableAntialiasing = false;
     }
 
@@ -207,6 +218,18 @@ void key_callback(GLFWwindow* window,int key,int scancode,int action,int mods) {
         ps.isDay = true;
         ps.skyBoxChange = true;
     }
+
+    if(key == GLFW_KEY_O && action == GLFW_PRESS){
+        if(ps.shadows)
+            ps.shadows = false;
+        else ps.shadows = true;
+    }
+    if(key == GLFW_KEY_P && action == GLFW_PRESS){
+        if(ps.lightIndex == 0)
+            ps.lightIndex = 1;
+        else ps.lightIndex = 0;
+    }
+
 }
 
 void setDayNightCycle(){

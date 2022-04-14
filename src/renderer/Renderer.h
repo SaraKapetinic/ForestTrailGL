@@ -15,7 +15,12 @@
 class Renderer {
 public:
     Renderer(std::unordered_map<std::string, Model> &m, std::unordered_map<std::string, InstancedModel>& im, TerrainModel& t, WaterModel& w, SkyBox& sk,  ProgramState &p, std::unordered_map<std::string, Shader> &s)
-            : models(m), ps(p), shaders(s), waterModel(w), terrainModel(t), instancedModels(im), skyBox(sk){};
+            : models(m), ps(p), shaders(s), waterModel(w), terrainModel(t), instancedModels(im), skyBox(sk){
+
+        initializeDepthBuffer();
+        prepareHDR();
+        prepareAntialiasing();
+    };
     void setMatrices(glm::mat4 v, glm::mat4 p){
         view = v;
         projection = p;
@@ -26,16 +31,28 @@ public:
     void renderScene();
     void renderWater(Shader& shader);
     void renderInstancedModel(Shader& shader);
+    void prepareHDR();
+    void renderQuad();
 private:
     std::unordered_map<std::string , Model>& models;
     std::unordered_map<std::string, Shader>& shaders;
     std::unordered_map<std::string, InstancedModel>& instancedModels;
+    unsigned depthMapFBO;
+    unsigned depthCubemap;
+    const unsigned SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
     TerrainModel& terrainModel;
+    unsigned hdrFBO;
+    unsigned sampleTex;
+    unsigned colorBuffer;
+    unsigned multisampleFBO;
     WaterModel& waterModel;
     SkyBox& skyBox;
     glm::mat4 view, projection;
     ProgramState& ps;
     void initializeShader(Shader &shader);
+    void initializeDepthBuffer();
+    void renderToDepthBuffer();
+    void prepareAntialiasing();
 };
 
 

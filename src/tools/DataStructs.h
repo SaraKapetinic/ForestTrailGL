@@ -28,8 +28,8 @@ struct ProgramState{
     bool isDay = true;
     bool skyBoxChange = false;
     bool EnableMouseMovement = true;
-    const unsigned SCR_WIDTH = 800;
-    const unsigned SCR_HEIGHT = 600;
+    unsigned SCR_WIDTH = 800;
+    unsigned SCR_HEIGHT = 600;
     glm::vec3 lightColor[3];
     glm::vec3 lightPosition[3];
     float linear = 0.7;
@@ -37,7 +37,11 @@ struct ProgramState{
     float terrainSize;
     float waterSize;
     float skyboxOpacity=0;
+    int lightIndex = 0;
+    bool shadows = false;
     Camera camera = Camera(glm::vec3(0.0f, 4.0f, 35.5f));
+
+
 };
 
 

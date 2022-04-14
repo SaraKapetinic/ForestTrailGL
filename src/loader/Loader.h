@@ -30,11 +30,20 @@ void loadShaders(std::unordered_map<std::string, Shader>& shaders){
     Shader waterShader("../resources/shaders/model.vs", "../resources/shaders/water.fs");
     Shader instanceShader("../resources/shaders/model_instances.vs", "../resources/shaders/model.fs");
 
+    Shader depthShader("../resources/shaders/depth.vs", "../resources/shaders/depth.fs", "../resources/shaders/depth.gs");
+    Shader hdr("../resources/shaders/hdr.vs", "../resources/shaders/hdr.fs");
+
+
     shaders.emplace("main", mainShader);
     shaders.emplace("terrain", terrainShader);
     shaders.emplace("skybox", skyBoxShader);
     shaders.emplace("water", waterShader);
     shaders.emplace("instance", instanceShader);
+
+    shaders.emplace("depth", depthShader);
+
+    shaders.emplace("hdr", hdr);
+
 }
 
 void loadInstancedModels(std::unordered_map<std::string, InstancedModel>& models){

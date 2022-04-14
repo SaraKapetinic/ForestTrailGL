@@ -15,9 +15,11 @@ struct PointLight {
 };
 
 uniform vec3 viewPos;
-
+uniform bool isDay;
+uniform int lightIndex;
+uniform bool shadowsEnabled;
 uniform sampler2D waterText;
-uniform PointLight pointLights[2];
+uniform PointLight pointLights[3];
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos){
     vec3 viewDir = normalize(viewPos-light.position);
@@ -43,11 +45,27 @@ void main()
 {
     vec4 result = vec4(0.0);
     vec4 texColor = texture(waterText, TexCoords / 25.0);
-    result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texColor;
-    result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texColor;
-    result[3] = 0.5;
-    FragColor = result;
+    if(!isDay){
+        if(shadowsEnabled){
+            result+=vec4(CalcPointLight(pointLights[lightIndex], Normal, FragPos),1.0) * texColor;
+            result[3] = 0.3;
+        }
+        else {
+            result+=vec4(CalcPointLight(pointLights[0], Normal, FragPos),1.0) * texColor;
+            result+=vec4(CalcPointLight(pointLights[1], Normal, FragPos),1.0) * texColor;
+            result*=vec4(0.2);
+            result[3] = 0.3;
+        }
 
+    }
+    else {
+        result+=  texColor;
+        result.a = 0.3;
+
+    }
+    vec3 color = result.rgb;
+    result = vec4(color, 0.2);
+    FragColor = result;
     if( FragColor.a < 0.1)
     {
         discard;

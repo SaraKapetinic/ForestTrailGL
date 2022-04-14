@@ -36,7 +36,12 @@ public:
            <<ps.lightColor[1].g<<'\n'
            <<ps.lightColor[1].b<<'\n'
            <<ps.linear<<'\n'
-           <<ps.quadratic;
+           <<ps.quadratic << '\n'
+           <<ps.shadows << '\n'
+           <<ps.lightIndex << '\n'
+           <<ps.isDay << '\n'
+           <<ps.enableAntialiasing << '\n'
+           <<ps.skyboxOpacity;
     };
 
     void loadFromDisk() {
@@ -58,8 +63,12 @@ public:
              >>ps.lightColor[1].g
              >>ps.lightColor[1].b
              >>ps.linear
-             >>ps.quadratic;
-
+             >>ps.quadratic
+             >>ps.shadows
+             >>ps.lightIndex
+             >>ps.isDay
+             >>ps.enableAntialiasing
+             >>ps.skyboxOpacity;
        }
     };
     void initImGui(GLFWwindow* window){
@@ -132,10 +141,28 @@ public:
 
             ImGui::Checkbox("Enable Antialiasing",&ps.enableAntialiasing);
             if(ps.enableAntialiasing){
-                glEnable(GL_MULTISAMPLE);
+
+                ps.enableAntialiasing = true;
             }else{
-                glDisable(GL_MULTISAMPLE);
+
+                ps.enableAntialiasing = false;
             }
+
+            ImGui::Checkbox("Enable Shadows", &ps.shadows);
+            if(ps.shadows){
+                ps.shadows = true;
+            }
+            else{
+                ps.shadows = false;
+            }
+
+            if(ps.shadows){
+                if(ImGui::RadioButton("Lamp 1", ps.lightIndex == 0))
+                    ps.lightIndex = 0;
+                else if(ImGui::RadioButton("Lamp 2", ps.lightIndex == 1))
+                    ps.lightIndex = 1;
+            }
+
             ImGui::End();
         }
 
@@ -153,7 +180,7 @@ public:
             ImGui::Text("Camera pitch: %f",c.Pitch);
             ImGui::Text("Camera yaw: %f",c.Yaw);
             ImGui::Text("Camera front: (%f, %f, %f)",c.Front.x,c.Front.y,c.Front.z);
-            ImGui::Checkbox("Enable camera movement on mouse",&ps.EnableMouseMovement);
+            //ImGui::Checkbox("Enable camera movement on mouse",&ps.EnableMouseMovement);
             ImGui::End();
         }
         ImGui::Render();

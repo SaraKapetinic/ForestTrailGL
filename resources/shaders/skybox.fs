@@ -12,6 +12,8 @@ void main()
     vec4 t1 = texture(nightSkybox, TexCoords);
 
     vec4  outputColor = mix(t0,t1, opacity);
-
+    vec3 color = outputColor.rgb;
+    color *= vec3(0.6);
+    outputColor = vec4(color, 1.0);
     FragColor = outputColor;
 }
