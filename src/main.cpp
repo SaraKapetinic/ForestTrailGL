@@ -20,7 +20,6 @@ float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 bool shouldChange = false;
 ProgramState ps;
-Renderer* rPointer;
 bool isDay = true;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -84,7 +83,6 @@ int main() {
     loadInstancedModels(instancedModels);
 
     Renderer renderer(models, instancedModels, terrainModel, waterModel, skyBox, ps, shaders );
-    rPointer = &renderer;
 
     glViewport(0, 0, 800, 600);
 
