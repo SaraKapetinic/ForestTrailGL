@@ -40,7 +40,8 @@ public:
            <<ps.shadows << '\n'
            <<ps.lightIndex << '\n'
            <<ps.isDay << '\n'
-           <<ps.enableAntialiasing;
+           <<ps.enableAntialiasing << '\n'
+           <<ps.skyboxOpacity;
     };
 
     void loadFromDisk() {
@@ -66,8 +67,8 @@ public:
              >>ps.shadows
              >>ps.lightIndex
              >>ps.isDay
-             >>ps.enableAntialiasing;
-
+             >>ps.enableAntialiasing
+             >>ps.skyboxOpacity;
        }
     };
     void initImGui(GLFWwindow* window){
