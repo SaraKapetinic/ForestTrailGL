@@ -120,22 +120,13 @@ void Renderer::renderScene() {
 
     shaders.at("hdr").use();
 
-    if(ps.enableAntialiasing) {
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, colorBuffer);
-        shaders.at("hdr").setFloat("exposure", exposure);
-        shaders.at("hdr").setInt("hdrBuffer", 0);
-    }
-    else {
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, colorBuffer);
-        shaders.at("hdr").setInt("hdrBuffer", 0);
-        shaders.at("hdr").setFloat("exposure", exposure);
-    }
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, colorBuffer);
+    shaders.at("hdr").setInt("hdrBuffer", 0);
+    shaders.at("hdr").setFloat("exposure", exposure);
 
     renderQuad();
-
-
+    
 }
 
 void Renderer::renderWater(Shader &shader) {
