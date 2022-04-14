@@ -31,8 +31,8 @@ struct ProgramState{
     float linear = 0.7;
     float quadratic = 0.032;
     bool enableAntialiasing = true;
-    const unsigned SCR_WIDTH = 800;
-    const unsigned SCR_HEIGHT = 600;
+    unsigned SCR_WIDTH = 800;
+    unsigned SCR_HEIGHT = 600;
     bool shadows = false;
     bool isDay = true;
     float terrainSize;
