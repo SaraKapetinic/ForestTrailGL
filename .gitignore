@@ -3,3 +3,5 @@ cmake-*-*
 .vscode
 .DS_Store
 resources/programState.txt
+clangtidy.txt
+doxygen.config

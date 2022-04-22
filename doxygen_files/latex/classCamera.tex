@@ -1,0 +1,68 @@
+\hypertarget{classCamera}{}\doxysection{Camera Class Reference}
+\label{classCamera}\index{Camera@{Camera}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classCamera_adad6423186f3d7e4c461cff7274f2c87}\label{classCamera_adad6423186f3d7e4c461cff7274f2c87}} 
+{\bfseries Camera} (glm\+::vec3 position=glm\+::vec3(0.\+0f, 0.\+0f, 0.\+0f), glm\+::vec3 up=glm\+::vec3(0.\+0f, 1.\+0f, 0.\+0f), float yaw=YAW, float pitch=PITCH)
+\item 
+\mbox{\Hypertarget{classCamera_a3537fd723fdfb5fed73a084346270cf6}\label{classCamera_a3537fd723fdfb5fed73a084346270cf6}} 
+{\bfseries Camera} (float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch)
+\item 
+\mbox{\Hypertarget{classCamera_ac5be0b9a950effe0e5f5993c182c12da}\label{classCamera_ac5be0b9a950effe0e5f5993c182c12da}} 
+glm\+::mat4 {\bfseries Get\+View\+Matrix} () const
+\item 
+\mbox{\Hypertarget{classCamera_aebba33a8b281fe2598bcafc54a55d296}\label{classCamera_aebba33a8b281fe2598bcafc54a55d296}} 
+void {\bfseries Process\+Keyboard} (Camera\+\_\+\+Movement direction, float delta\+Time)
+\item 
+\mbox{\Hypertarget{classCamera_a656c2a8dc40150874f15bce47b789751}\label{classCamera_a656c2a8dc40150874f15bce47b789751}} 
+void {\bfseries Process\+Mouse\+Movement} (float xoffset, float yoffset, GLboolean constrain\+Pitch=true)
+\item 
+\mbox{\Hypertarget{classCamera_a05d150f7dc98940d2dd62f686cc2efe3}\label{classCamera_a05d150f7dc98940d2dd62f686cc2efe3}} 
+void {\bfseries Process\+Mouse\+Scroll} (float yoffset)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classCamera_a9733b59f5340f6f1bca24d52a6679039}\label{classCamera_a9733b59f5340f6f1bca24d52a6679039}} 
+glm\+::vec3 {\bfseries Position}
+\item 
+\mbox{\Hypertarget{classCamera_ac95b3737115ffe9a6ff9128344d5b963}\label{classCamera_ac95b3737115ffe9a6ff9128344d5b963}} 
+glm\+::vec3 {\bfseries Front}
+\item 
+\mbox{\Hypertarget{classCamera_ad74c4a490bc8865e67e27a2036d0a72d}\label{classCamera_ad74c4a490bc8865e67e27a2036d0a72d}} 
+glm\+::vec3 {\bfseries Up}
+\item 
+\mbox{\Hypertarget{classCamera_a6624f9f4228f6299a3d4ccb81e28da0a}\label{classCamera_a6624f9f4228f6299a3d4ccb81e28da0a}} 
+glm\+::vec3 {\bfseries Right}
+\item 
+\mbox{\Hypertarget{classCamera_a340d30b833954b87fd016ce0e724c723}\label{classCamera_a340d30b833954b87fd016ce0e724c723}} 
+glm\+::vec3 {\bfseries World\+Up}
+\item 
+\mbox{\Hypertarget{classCamera_a1a1354a2bd2df7f18ef82924e671d241}\label{classCamera_a1a1354a2bd2df7f18ef82924e671d241}} 
+float {\bfseries Yaw}
+\item 
+\mbox{\Hypertarget{classCamera_af9c8f223bb06bb74fc77c586545e7e67}\label{classCamera_af9c8f223bb06bb74fc77c586545e7e67}} 
+float {\bfseries Pitch}
+\item 
+\mbox{\Hypertarget{classCamera_a63221392d762df6a74f45bc9d43a2f61}\label{classCamera_a63221392d762df6a74f45bc9d43a2f61}} 
+float {\bfseries Movement\+Speed}
+\item 
+\mbox{\Hypertarget{classCamera_a73e88844b31d5111eeb76327dfbb2d68}\label{classCamera_a73e88844b31d5111eeb76327dfbb2d68}} 
+float {\bfseries Mouse\+Sensitivity}
+\item 
+\mbox{\Hypertarget{classCamera_a2becf27d08eb7e6da9c597c73ea95b5d}\label{classCamera_a2becf27d08eb7e6da9c597c73ea95b5d}} 
+float {\bfseries Zoom}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 26 of file Camera.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/Camera.\+h\end{DoxyCompactItemize}

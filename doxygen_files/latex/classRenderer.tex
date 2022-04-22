@@ -1,0 +1,48 @@
+\hypertarget{classRenderer}{}\doxysection{Renderer Class Reference}
+\label{classRenderer}\index{Renderer@{Renderer}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRenderer_ae164ff3754192a0a8449b06d4e9316ed}\label{classRenderer_ae164ff3754192a0a8449b06d4e9316ed}} 
+{\bfseries Renderer} (std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classModel}{Model}} $>$ \&m, std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classInstancedModel}{Instanced\+Model}} $>$ \&im, \mbox{\hyperlink{classTerrainModel}{Terrain\+Model}} \&t, \mbox{\hyperlink{classWaterModel}{Water\+Model}} \&w, \mbox{\hyperlink{classSkyBox}{Sky\+Box}} \&sk, \mbox{\hyperlink{structProgramState}{Program\+State}} \&p, std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classShader}{Shader}} $>$ \&s)
+\item 
+\mbox{\Hypertarget{classRenderer_ae8a0361025a883335e42cb08517c9f8a}\label{classRenderer_ae8a0361025a883335e42cb08517c9f8a}} 
+void {\bfseries set\+Matrices} (glm\+::mat4 v, glm\+::mat4 p)
+\item 
+\mbox{\Hypertarget{classRenderer_aaf979fbc4934969fb9df05eff4fb6ce5}\label{classRenderer_aaf979fbc4934969fb9df05eff4fb6ce5}} 
+void {\bfseries render\+Terrain} (\mbox{\hyperlink{classShader}{Shader}} \&shader)
+\item 
+\mbox{\Hypertarget{classRenderer_a8634e94398de8d71053200150f88ac67}\label{classRenderer_a8634e94398de8d71053200150f88ac67}} 
+void {\bfseries render\+Skybox} (\mbox{\hyperlink{classShader}{Shader}} \&shader)
+\item 
+\mbox{\Hypertarget{classRenderer_a77ba8a6a65cc7e18a47008b9412b3c6e}\label{classRenderer_a77ba8a6a65cc7e18a47008b9412b3c6e}} 
+void {\bfseries render\+Models} (\mbox{\hyperlink{classShader}{Shader}} \&shader)
+\item 
+\mbox{\Hypertarget{classRenderer_a4effbac4f41b348002ca7d63b839dcf3}\label{classRenderer_a4effbac4f41b348002ca7d63b839dcf3}} 
+void {\bfseries render\+Scene} ()
+\item 
+\mbox{\Hypertarget{classRenderer_a4c74d991afa4c89e7cc2ad277ac74318}\label{classRenderer_a4c74d991afa4c89e7cc2ad277ac74318}} 
+void {\bfseries render\+Water} (\mbox{\hyperlink{classShader}{Shader}} \&shader)
+\item 
+\mbox{\Hypertarget{classRenderer_a3676bd0a6072561f670d27f47ffe4419}\label{classRenderer_a3676bd0a6072561f670d27f47ffe4419}} 
+void {\bfseries render\+Instanced\+Model} (\mbox{\hyperlink{classShader}{Shader}} \&shader)
+\item 
+\mbox{\Hypertarget{classRenderer_aaf5a5ccf61aa05f4ee8e4c71532627f9}\label{classRenderer_aaf5a5ccf61aa05f4ee8e4c71532627f9}} 
+void {\bfseries prepare\+HDR} ()
+\item 
+\mbox{\Hypertarget{classRenderer_a96ca504f6634dae8c59f7af2e853a11e}\label{classRenderer_a96ca504f6634dae8c59f7af2e853a11e}} 
+void {\bfseries render\+Quad} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 15 of file Renderer.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/renderer/Renderer.\+h\item 
+src/renderer/Renderer.\+cpp\end{DoxyCompactItemize}
