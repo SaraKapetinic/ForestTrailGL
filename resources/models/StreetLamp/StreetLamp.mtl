@@ -22,7 +22,6 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 1
-map_Bump /1
 map_Kd ground020.jpg
 
 newmtl lambert3SG
@@ -34,5 +33,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 1
-map_Bump /1
 map_Kd germany010.jpg

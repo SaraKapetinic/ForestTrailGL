@@ -1,0 +1,3 @@
+error: no input files [clang-diagnostic-error]
+error: no such file or directory: '/home/sara/Desktop/facultyProjects/Grafika/ForestTrailGL/main.cpp' [clang-diagnostic-error]
+error: unable to handle compilation, expected exactly one compiler job in '' [clang-diagnostic-error]

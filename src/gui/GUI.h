@@ -16,7 +16,7 @@
 class GUI {
 
 public:
-    GUI(ProgramState& p, std::string sPath):ps(p),path(sPath){};
+    GUI(ProgramState& p, std::string sPath):ps(p),path(std::move(sPath)){};
     void saveToDisk() {
         std::ofstream out(path);
 
@@ -104,9 +104,9 @@ public:
 
         {
             ImGuiIO io = ImGui::GetIO();
-            float display_width = (float)io.DisplaySize.x;
-            float display_height = (float)io.DisplaySize.y;
-            float pos_x = display_width*0.6;
+            auto display_width = (float)io.DisplaySize.x;
+            auto display_height = (float)io.DisplaySize.y;
+            auto pos_x = display_width*0.6;
             float pos_y = display_height*0.7;
 
             ImGui::SetNextWindowPos(ImVec2(pos_x,pos_y),ImGuiCond_FirstUseEver);

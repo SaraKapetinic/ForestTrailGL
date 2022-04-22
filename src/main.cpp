@@ -128,7 +128,7 @@ void processInput(GLFWwindow* window){
         if(ps.camera.Position.y > 0 )
             ps.camera.Position += speed * ps.camera.Front;
         else {
-            if(ps.camera.Position.y <= 0)
+            //if(ps.camera.Position.y <= 0)
                 if(ps.camera.Front.y > 0 )
                     ps.camera.Position += speed * ps.camera.Front;
         }
@@ -136,7 +136,7 @@ void processInput(GLFWwindow* window){
         if(ps.camera.Position.y > 0 )
             ps.camera.Position -= speed * ps.camera.Front;
         else {
-            if(ps.camera.Position.y <= 0)
+            //if(ps.camera.Position.y <= 0)
                 if(ps.camera.Front.y < 0 )
                     ps.camera.Position -= speed * ps.camera.Front;
         }
