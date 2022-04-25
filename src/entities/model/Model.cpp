@@ -160,6 +160,6 @@ unsigned Model::TextureFromFile(const char *path, const std::string &directory) 
         std::cout << "Texture failed to load at path: " << path << std::endl;
         stbi_image_free(data);
     }
-
+    delete(data);
     return textureID;
 }
