@@ -1,0 +1,10 @@
+/output/CMakeFiles/STB_IMAGE.dir
+/output/CMakeFiles/ForestTrailGL.dir
+/output/CMakeFiles/edit_cache.dir
+/output/CMakeFiles/rebuild_cache.dir
+/output/external/glad/CMakeFiles/glad.dir
+/output/external/glad/CMakeFiles/edit_cache.dir
+/output/external/glad/CMakeFiles/rebuild_cache.dir
+/output/external/imgui/CMakeFiles/imgui.dir
+/output/external/imgui/CMakeFiles/edit_cache.dir
+/output/external/imgui/CMakeFiles/rebuild_cache.dir

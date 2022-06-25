@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+  compilation:
+    user: $UID:$GID
+    build: .
+    volumes:
+      - ./build_output:/output
+      - /etc/group:/etc/group:ro
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/shadow:/etc/shadow:ro

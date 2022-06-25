@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
-find_package(ASSIMP REQUIRED)
+find_package(assimp REQUIRED)
 add_library(STB_IMAGE "external/stb_image.cpp")
 
 add_subdirectory(external/glad/)
